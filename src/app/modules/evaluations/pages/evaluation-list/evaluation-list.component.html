@@ -1,0 +1,170 @@
+<!-- Contenido principal -->
+<div class="container mx-auto mt-10 max-w-[95%]">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">Listado# 3</h2>
+
+  <!-- Filtros y opciones -->
+  <div class="flex justify-between items-center mb-4">
+    <!-- Selector de elementos por página -->
+    <div>
+      <label for="itemsPerPage" class="text-sm text-gray-600">Items por página:</label>
+      <select
+        id="itemsPerPage"
+        [(ngModel)]="itemsPerPage"
+        (change)="updateItemsPerPage($event)"
+        class="ml-2 p-1 border rounded"
+      >
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="15">15</option>
+        <option [value]="20">20</option>
+      </select>
+    </div>
+
+    <!-- Botones de Filtros y Exportar a Excel -->
+    <div class="flex space-x-4">
+      <!-- Botón para mostrar/ocultar filtros -->
+      <button
+        (click)="toggleFilters()"
+        class="bg-customPurple-100 hover:bg-customPurple-200 text-white py-2 px-4 rounded"
+      >
+        Filtros
+      </button>
+
+      <!-- Botón para exportar a Excel -->
+      <button
+        (click)="exportToExcel()"
+        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+      >
+        Exportar a Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtros de búsqueda (opcional) -->
+  <div *ngIf="showFilters" class="mb-4 p-4 border rounded bg-gray-50">
+    <div class="grid grid-cols-2 gap-4">
+      <input [(ngModel)]="dniFilter" placeholder="Filtrar por v1" class="p-2 border rounded" />
+      <input
+        [(ngModel)]="fullNameFilter"
+        placeholder="Filtrar por v2"
+        class="p-2 border rounded"
+      />
+      <input [(ngModel)]="jobTitleFilter" placeholder="Filtrar por v3" class="p-2 border rounded" />
+      <input [(ngModel)]="contractFilter" placeholder="Filtrar por v4" class="p-2 border rounded" />
+      <input [(ngModel)]="serviceFilter" placeholder="Filtrar por v5" class="p-2 border rounded" />
+      
+      <!-- Nuevo filtro de estado -->
+      <select [(ngModel)]="statusFilter" class="p-2 border rounded">
+        <option value="">Todos</option>
+        <option value="sin respuesta">Sin respuesta</option>
+        <option value="con respuesta">Con respuesta</option>
+      </select>
+    </div>
+    <div class="mt-4 flex justify-between">
+      <button
+        (click)="applyFilters()"
+        class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-4 rounded"
+      >
+        Aplicar Filtros
+      </button>
+      <button
+        (click)="resetFilters()"
+        class="bg-customPurple-100 hover:bg-customPurple-200 text-white py-2 px-4 rounded"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla de evaluaciones -->
+  <table class="w-full bg-white shadow-md rounded-lg overflow-hidden text-sm">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="px-2 py-1 text-left font-semibold text-gray-700">Expandir</th>
+        <th class="px-2 py-1 text-left font-semibold text-gray-700 cursor-pointer" (click)="toggleSort('id')">ID</th>
+        <th class="px-2 py-1 text-left font-semibold text-gray-700">Variable1</th>
+        <th class="px-2 py-1 text-left font-semibold text-gray-700">Variable2</th>
+        <th class="px-2 py-1 text-left font-semibold text-gray-700">Variable3</th>
+        <th class="px-2 py-1 text-left font-semibold text-gray-700">Variable4</th>
+        <th class="px-2 py-1 text-left font-semibold text-gray-700">Variable5</th>
+        <th class="px-2 py-1 text-left font-semibold text-gray-700">Variable6</th>
+        <th class="px-2 py-1 text-center font-semibold text-gray-700">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let evaluation of evaluations | slice: (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
+        <tr>
+          <!-- Botón expandir -->
+          <td class="px-2 py-1 text-center">
+            <button (click)="toggleDetails(evaluation)" class="focus:outline-none">
+              <span *ngIf="!evaluation.showDetails">➕</span>
+              <span *ngIf="evaluation.showDetails">➖</span>
+            </button>
+          </td>
+          <td class="px-2 py-1 text-gray-600">{{ evaluation.id }}</td>
+          <td class="px-2 py-1 text-gray-600">{{ evaluation.full_name }}</td>
+          <td class="px-2 py-1 text-gray-600">{{ evaluation.dni }}</td>
+          <td class="px-2 py-1 text-gray-600">{{ evaluation.contract }}</td>
+          <td class="px-2 py-1 text-gray-600">{{ evaluation.service }}</td>
+          <td class="px-2 py-1 text-gray-600">{{ evaluation.termination_days }}</td>
+          <td class="px-2 py-1">
+            <span *ngIf="evaluation.responseStatus" class="bg-green-200 text-green-800 py-1 px-2 rounded-full text-xs font-semibold">Con respuesta</span>
+            <span *ngIf="!evaluation.responseStatus" class="bg-red-200 text-red-800 py-1 px-2 rounded-full text-xs font-semibold">Sin respuesta</span>
+          </td>
+          <td class="px-2 py-1 text-center">
+            <div class="flex justify-center items-center space-x-2 h-full">
+              <!-- Botón Gerente/Programador -->
+              <button 
+                (click)="linkAccountManager(evaluation)" 
+                class="bg-blue-800 hover:bg-blue-900 text-white text-xs font-medium py-1 px-2 rounded transition duration-150"
+              >
+                Btn1
+              </button>
+              
+              <!-- Botón "Responder evaluación" solo se muestra si no tiene respuesta -->
+              <!-- Botón "Responder evaluación" solo se muestra si no tiene respuesta -->
+              <button 
+              *ngIf="!evaluation.responseStatus"
+              (click)="viewEvaluation(evaluation)" 
+              class="bg-blue-400 hover:bg-blue-500 text-white text-xs font-medium py-1 px-2 rounded transition duration-150"
+              >
+              btn ingreso otro modulo
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Detalles expandibles -->
+        <tr *ngIf="evaluation.showDetails">
+          <td colspan="9" class="p-4 bg-gray-100">
+            <p class="text-sm"><strong>v1:</strong> {{ evaluation.job_title }}</p>
+            <p class="text-sm"><strong>v2:</strong> {{ evaluation.name_delegation }}</p>
+            <p class="text-sm"><strong>v3:</strong> {{ evaluation.date_generation | date: 'short' }}</p>
+            <p class="text-sm"><strong>v4:</strong> {{ evaluation.date_seniority | date: 'short' }}</p>
+            <p class="text-sm"><strong>v5:</strong> {{ evaluation.account_manager_name || 'Sin asignar' }}</p>
+            <p class="text-sm"><strong>v6:</strong> {{ evaluation.programmer_name || 'Sin asignar' }}</p>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div class="flex justify-between items-center mt-6">
+    <button
+      (click)="prevPage()"
+      [disabled]="currentPage === 1"
+      class="bg-gray-200 hover:bg-gray-300 text-gray-600 text-xs font-medium py-1 px-2 rounded transition duration-150"
+    >
+      Página anterior
+    </button>
+    <span class="text-xs text-gray-600">Página {{ currentPage }}</span>
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage * itemsPerPage >= totalItems"
+      class="bg-gray-200 hover:bg-gray-300 text-gray-600 text-xs font-medium py-1 px-2 rounded transition duration-150"
+    >
+      Siguiente página
+    </button>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="flex justify-center items-center min-h-screen">
+  <div class="bg-white shadow-lg rounded-lg p-6 w-96 border border-gray-300">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Detalles del Usuario</h2>  <!-- Cambié Evaluación a Usuario -->
+    <ul>
+      <li class="mb-2"><strong>Nombre:</strong> {{ user?.name }}</li>  <!-- Cambié evaluation a user -->
+      <li class="mb-2"><strong>DNI:</strong> {{ user?.dni }}</li>
+      <li class="mb-2"><strong>Correo Electrónico:</strong> {{ user?.email }}</li>
+      <li class="mb-2"><strong>Teléfono:</strong> {{ user?.phone_number }}</li>
+      <li class="mb-2"><strong>Fecha Activa:</strong> {{ user?.actived_date ? 'Sí' : 'No' }}</li>
+      <li class="mb-2"><strong>Estado:</strong> {{ user?.date_status }}</li>
+      <li class="mb-2"><strong>Alistamiento Completado:</strong> {{ user?.completed_enlisted ? 'Usuario Alistado' : 'Usuario sin Alistar' }}</li>
+      <li class="mb-2"><strong>Estado de Alistamiento:</strong> {{ user?.enlisted_status ? 'Alistado' : 'Pendiente de Alistar' }}</li>
+    </ul>
+
+    <div class="mt-6 flex justify-between">
+      <button routerLink="/users/events/{{user.id}}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+        Eventos
+      </button>
+      <button *ngIf="user?.date_status !== 'Completed'" routerLink="/users/products/{{user.id}}" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+        Alistamiento
+      </button>
+      <button *ngIf="user?.date_status === 'Completed'" routerLink="/users/pdf/{{user.id}}" class="bg-customPurple-100 hover:bg-customPurple-400 text-white py-2 px-4 rounded">
+        Documento
+      </button>
+    </div>
+  </div>
+</div>

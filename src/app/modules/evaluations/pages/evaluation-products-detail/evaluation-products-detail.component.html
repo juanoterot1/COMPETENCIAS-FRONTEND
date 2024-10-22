@@ -1,0 +1,84 @@
+<div *ngIf="appointmentId !== null" class="flex justify-center bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full mt-16 mb-8">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-3xl font-semibold text-left">
+        Productos para la evaluación {{ appointmentId }}
+      </h2>
+      <button (click)="openConfirmDialog()" class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600">
+        Confirmar Alistamiento
+      </button>
+    </div>
+    <div *ngIf="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
+
+
+    <table class="min-w-full bg-white border-collapse">
+      <thead class="bg-gray-200 text-gray-700 rounded-t-lg">
+        <tr>
+          <th class="border-b py-3 px-4 text-left rounded-tl-lg">Producto</th>
+          <th class="border-b py-3 px-4 text-left">Código de Suministro</th>
+          <th class="border-b py-3 px-4 text-left">Tamaño</th>
+          <th class="border-b py-3 px-4 text-left">Cantidad</th>
+          <th class="border-b py-3 px-4 text-left">Modo</th>
+          <th class="border-b py-3 px-4 text-left">Pendiente</th>
+          <th class="border-b py-3 px-4 text-left rounded-tr-lg">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products"
+            [ngClass]="{
+              'bg-yellow-50': !product.quantity || !product.mode,
+              'border-b': true
+            }">
+          <td class="py-2">{{ product.erp_product }}</td>
+          <td class="py-2">{{ product.erp_supplying_code }}</td>
+          <td class="py-2">{{ product.size }}</td>
+          <td class="py-2">
+            <input type="number" [(ngModel)]="product.quantity" (change)="updateProduct(product)"
+                   class="w-16 text-center p-2 border rounded" min="0" max="2" placeholder="1">
+          </td>
+          <td class="py-2">
+            <select [(ngModel)]="product.mode" (change)="updateProduct(product)" class="p-2 border rounded">
+              <option value="input">Entrada</option>
+              <option value="output">Salida</option>
+            </select>
+          </td>
+          <td class="py-2 text-center">
+            <input type="checkbox" [(ngModel)]="product.pending" (change)="updateProduct(product)">
+          </td>
+          <td class="py-2">
+            <button (click)="deleteProduct(product.id)" class="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="newProduct !== null" class="flex items-center justify-between mb-4 p-2 border rounded mt-6">
+      <input type="text" [(ngModel)]="newProduct.erp_product" placeholder="Producto"
+             class="w-24 text-center p-2 border rounded mr-2">
+      <input type="text" [(ngModel)]="newProduct.erp_supplying_code" placeholder="Código de Suministro"
+             class="w-32 text-center p-2 border rounded mr-2">
+      <input type="text" [(ngModel)]="newProduct.size" placeholder="Tamaño"
+             class="w-24 text-center p-2 border rounded mr-2">
+      <input type="number" [(ngModel)]="newProduct.quantity" placeholder="Cantidad"
+             class="w-24 text-center p-2 border rounded mr-2" min="0" max="2">
+      <select [(ngModel)]="newProduct.mode" class="p-2 border rounded mr-2">
+        <option value="input">Entrada</option>
+        <option value="output">Salida</option>
+      </select>
+      <button (click)="saveNewProduct()" class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600">
+        Guardar
+      </button>
+      <button (click)="cancelNewProduct()" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600">
+        Cancelar
+      </button>
+    </div>
+
+    <div class="flex justify-center mt-6">
+      <button *ngIf="!newProduct" (click)="addProduct()" class="bg-gray-800 text-white p-4 rounded-full hover:bg-gray-700">
+        +
+      </button>
+    </div>
+  </div>
+</div>

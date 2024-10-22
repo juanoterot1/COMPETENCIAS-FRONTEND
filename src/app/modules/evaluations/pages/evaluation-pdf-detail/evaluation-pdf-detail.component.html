@@ -1,0 +1,123 @@
+<div *ngIf="!isLoading" id="print-section">
+  <div class="container mx-auto mt-6 p-4 max-w-3xl border-2 border-gray-300 rounded-lg">
+
+    <div class="flex justify-self-start mb-6">
+      <img src="assets/logo/AtlasGroupLogo.png" alt="Atlas Group Logo" class="h-24">
+      <h2 class="text-2xl font-semibold mt-8 text-center">Revisión Entrega de Equipamiento</h2>
+    </div>
+
+    <div class="mb-6 border-b border-gray-400 pb-4">
+      <h3 class="text-lg font-semibold mb-2">Información del Trabajador</h3>
+      <p><strong>Nombre:</strong> {{ evaluation.name }}</p>
+      <p><strong>Documento:</strong> {{ evaluation.dni }}</p>
+      <p><strong>Número de Entrega:</strong> {{ evaluation.id }}</p>
+    </div>
+
+    <div class="mb-6 border-b border-gray-400 pb-4" *ngIf="deliveredProducts.length > 0">
+      <h3 class="text-lg font-semibold mb-2">Artículos Entregados</h3>
+      <table class="min-w-full bg-white border border-gray-400">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border border-gray-400 py-2 px-4 text-left">Artículo</th>
+            <th class="border border-gray-400 py-2 px-4 text-left">Talla</th>
+            <th class="border border-gray-400 py-2 px-4 text-left">Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of deliveredProducts" class="border-b border-gray-400">
+            <td class="border border-gray-400 py-2 px-4">{{ product.erp_product }}</td>
+            <td class="border border-gray-400 py-2 px-4">{{ product.size }}</td>
+            <td class="border border-gray-400 py-2 px-4">{{ product.quantity }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mb-6 border-b border-gray-400 pb-4" *ngIf="pendingProducts.length > 0">
+      <h3 class="text-lg font-semibold mb-2">Artículos Pendientes</h3>
+      <table class="min-w-full bg-white border border-gray-400">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border border-gray-400 py-2 px-4 text-left">Artículo</th>
+            <th class="border border-gray-400 py-2 px-4 text-left">Talla</th>
+            <th class="border border-gray-400 py-2 px-4 text-left">Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of pendingProducts" class="border-b border-gray-400">
+            <td class="border border-gray-400 py-2 px-4">{{ product.erp_product }}</td>
+            <td class="border border-gray-400 py-2 px-4">{{ product.size }}</td>
+            <td class="border border-gray-400 py-2 px-4">{{ product.quantity }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mb-6 border-b border-gray-400 pb-4" *ngIf="returnedProducts.length > 0">
+      <h3 class="text-lg font-semibold mb-2">Artículos Devueltos</h3>
+      <table class="min-w-full bg-white border border-gray-400">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border border-gray-400 py-2 px-4 text-left">Artículo</th>
+            <th class="border border-gray-400 py-2 px-4 text-left">Talla</th>
+            <th class="border border-gray-400 py-2 px-4 text-left">Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of returnedProducts" class="border-b border-gray-400">
+            <td class="border border-gray-400 py-2 px-4">{{ product.erp_product }}</td>
+            <td class="border border-gray-400 py-2 px-4">{{ product.size }}</td>
+            <td class="border border-gray-400 py-2 px-4">{{ product.quantity }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container mx-auto mt-6 p-4 max-w-3xl border-2 border-gray-300 rounded-lg">
+      <div class="mt-4 text-sm text-gray-600">
+        <p>
+          Conforme al artículo 8 de la Ley 527 de 1999, la firma digital aplicada en este documento tiene el mismo valor legal que una firma manuscrita.
+        </p>
+        <p class="mt-2">
+          Al firmar este documento, se certifica la recepción completa y adecuada de los artículos mencionados, entregados por el empleador, conforme a lo estipulado en la normativa vigente.
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="singUrl || photoUrl" class="mb-6 mt-6 border-b border-gray-400 pb-4">
+      <h3 class="text-lg font-semibold mb-2 text-center">Firma y Foto del Trabajador</h3>
+      <div class="flex justify-center">
+        <img [src]="singUrl" alt="Firma del Trabajador" class="h-48 mx-4">
+        <img [src]="photoUrl" alt="Foto del Trabajador" class="h-48 mx-4">
+      </div>
+    </div>
+
+    <div *ngIf="evaluationEvents.length" class="mb-6 mt-6">
+      <h3 class="text-lg font-semibold mb-2">Historial de Eventos de la Evaluación</h3>
+      <table class="min-w-full bg-white border border-gray-400">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="border border-gray-400 py-2 px-4 text-left">Fecha</th>
+            <th class="border border-gray-400 py-2 px-4 text-left">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of evaluationEvents" class="border-b border-gray-400">
+            <td class="border border-gray-400 py-2 px-4">{{ event.date }}</td>
+            <td class="border border-gray-400 py-2 px-4">{{ event.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex justify-end mt-4 no-print">
+      <button [printTitle]="printTitle" [openNewTab]="true" [useExistingCss]="true" printSectionId="print-section" ngxPrint class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Imprimir PDF
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoading">
+  Cargando datos, por favor espere...
+</div>

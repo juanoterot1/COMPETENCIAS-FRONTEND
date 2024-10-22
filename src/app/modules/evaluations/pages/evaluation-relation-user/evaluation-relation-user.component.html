@@ -1,0 +1,71 @@
+<!-- Contenido principal -->
+<div class="w-full max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl flex flex-col mt-8">
+  <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Relacionar gerente de cuenta y programador</h2>
+
+  <form (ngSubmit)="submitRelations()" class="space-y-6">
+    <!-- Selector de Gerente (preseleccionado por nombre) -->
+    <div>
+      <label for="gerente" class="block text-lg font-medium text-gray-600 mb-2">Selecciona el Gerente de cuenta</label>
+      <div class="relative">
+        <select
+          id="gerente"
+          [(ngModel)]="selectedGerente"
+          name="gerente"
+          required
+          class="block appearance-none w-full bg-white border border-gray-300 px-4 py-3 rounded-lg shadow-sm"
+        >
+          <option [ngValue]="null">-- Selecciona un gerente --</option>
+          <option *ngFor="let gerente of gerentes" [ngValue]="gerente.username">
+            {{ gerente.username }}
+          </option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M7 10l5 5 5-5H7z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selector de Programador (preseleccionado por nombre) -->
+    <div>
+      <label for="programador" class="block text-lg font-medium text-gray-600 mb-2">Selecciona el Programador</label>
+      <div class="relative">
+        <select
+          id="programador"
+          [(ngModel)]="selectedProgramador"
+          name="programador"
+          required
+          class="block appearance-none w-full bg-white border border-gray-300 px-4 py-3 rounded-lg shadow-sm"
+        >
+          <option [ngValue]="null">-- Selecciona un programador --</option>
+          <option *ngFor="let programador of programadores" [ngValue]="programador.username">
+            {{ programador.username }}
+          </option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M7 10l5 5 5-5H7z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="flex justify-end space-x-4">
+      <button
+        type="button"
+        (click)="cancel()"
+        class="bg-gray-500 text-white py-3 px-6 rounded-md hover:bg-gray-600 text-lg transition duration-150 ease-in-out"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md text-lg transition duration-150 ease-in-out"
+      >
+        Guardar Relaciones
+      </button>
+    </div>
+  </form>
+</div>
