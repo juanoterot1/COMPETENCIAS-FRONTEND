@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { bootstrapCalendarDate, bootstrapBookHalf, bootstrapPersonAdd, bootstrapWatch, bootstrapSun, bootstrapShare, bootstrapFeather,bootstrapGearWideConnected, bootstrapMagic } from '@ng-icons/bootstrap-icons';
+import { bootstrapCalendarDate, bootstrapBookHalf, bootstrapPersonAdd, bootstrapWatch, bootstrapSun, bootstrapShare, bootstrapFeather,bootstrapGearWideConnected, bootstrapMagic,bootstrapPeople,bootstrapBuilding,bootstrapJournal,bootstrapGrid3x3GapFill,bootstrapClipboardCheck,bootstrapQuestionCircleFill,bootstrapChatSquareQuoteFill,  } from '@ng-icons/bootstrap-icons';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   templateUrl: './sidebar.component.html',
   imports: [NgIconComponent, CommonModule, RouterModule],
-  viewProviders: [provideIcons({ bootstrapCalendarDate, bootstrapBookHalf, bootstrapPersonAdd, bootstrapWatch, bootstrapSun, bootstrapShare, bootstrapFeather, bootstrapGearWideConnected, bootstrapMagic })]
+  viewProviders: [provideIcons({ bootstrapCalendarDate, bootstrapBookHalf, bootstrapPersonAdd, bootstrapWatch, bootstrapSun, bootstrapShare, bootstrapFeather, bootstrapGearWideConnected, bootstrapMagic, bootstrapPeople,bootstrapBuilding,bootstrapJournal,bootstrapGrid3x3GapFill,bootstrapClipboardCheck,bootstrapQuestionCircleFill,bootstrapChatSquareQuoteFill, })]
 })
 export class SidebarComponent implements OnInit {
 

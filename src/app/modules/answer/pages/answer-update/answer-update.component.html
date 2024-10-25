@@ -1,0 +1,58 @@
+<div class="w-full max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl flex flex-col mt-8">
+    <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Editar Respuesta</h2>
+  
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-6 text-gray-700">Modifica los detalles de la respuesta</h3>
+      <form (ngSubmit)="updateAnswer()" class="space-y-6">
+        
+        <!-- Descripción de la Respuesta -->
+        <div>
+          <label for="answer_description" class="block text-lg font-medium text-gray-600 mb-2">Descripción</label>
+          <input type="text" id="answer_description" [(ngModel)]="answer_description" name="answer_description" 
+                 class="border p-3 rounded-md w-full text-lg" required>
+        </div>
+  
+        <!-- Evaluación -->
+        <div>
+          <label for="evaluation" class="block text-lg font-medium text-gray-600 mb-2">Evaluación</label>
+          <select [(ngModel)]="id_evaluation" name="evaluation" class="border p-3 rounded-md w-full text-lg" required>
+            <option *ngFor="let evaluation of evaluations" [value]="evaluation.id">{{ evaluation.name }}</option>
+          </select>
+        </div>
+  
+        <!-- Pregunta -->
+        <div>
+          <label for="question" class="block text-lg font-medium text-gray-600 mb-2">Pregunta</label>
+          <select [(ngModel)]="id_question" name="question" class="border p-3 rounded-md w-full text-lg" required>
+            <option *ngFor="let question of questions" [value]="question.id">{{ question.name }}</option>
+          </select>
+        </div>
+  
+        <!-- Usuario -->
+        <div>
+          <label for="user" class="block text-lg font-medium text-gray-600 mb-2">Usuario</label>
+          <select [(ngModel)]="id_user" name="user" class="border p-3 rounded-md w-full text-lg" required>
+            <option *ngFor="let user of users" [value]="user.id">{{ user.username }}</option>
+          </select>
+        </div>
+  
+        <!-- Puntuación -->
+        <div>
+          <label for="score" class="block text-lg font-medium text-gray-600 mb-2">Puntuación</label>
+          <input type="number" id="score" [(ngModel)]="score" name="score" 
+                 class="border p-3 rounded-md w-full text-lg" required>
+        </div>
+  
+        <!-- Botones de acción -->
+        <div class="flex justify-end space-x-4">
+          <button type="button" (click)="cancel()" class="bg-gray-500 text-white py-3 px-6 rounded-md hover:bg-gray-600 text-lg">
+            Cancelar
+          </button>
+          <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md text-lg">
+            Guardar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

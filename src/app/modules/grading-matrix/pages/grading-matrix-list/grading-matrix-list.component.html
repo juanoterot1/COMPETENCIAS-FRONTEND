@@ -1,0 +1,85 @@
+<div class="container mx-auto mt-10 p-4">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">Listado de Grading Matrices</h2>
+
+  <!-- Filtros y opciones -->
+  <div class="flex justify-between items-center mb-4">
+    <!-- Selector de elementos por página -->
+    <div>
+      <label for="itemsPerPage" class="text-sm text-gray-600">Items por página:</label>
+      <select id="itemsPerPage" [(ngModel)]="itemsPerPage" (change)="updateItemsPerPage($event)" class="ml-2 p-1 border rounded">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="15">15</option>
+        <option [value]="20">20</option>
+      </select>
+    </div>
+
+    <!-- Botones de Crear y Exportar -->
+    <div class="flex space-x-4">
+      <!-- Botón para crear grading matrix -->
+      <button (click)="navigateToCreateGradingMatrix()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+        Crear Grading Matrix
+      </button>
+
+      <!-- Botón para exportar a Excel -->
+      <button (click)="exportToExcel()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+        Exportar a Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla de grading matrices -->
+  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="p-3 text-left text-base font-semibold text-gray-700 cursor-pointer" (click)="toggleSort('id')">
+          ID
+          <span *ngIf="sortBy === 'id' && sortDirection === 'asc'">🔼</span>
+          <span *ngIf="sortBy === 'id' && sortDirection === 'desc'">🔽</span>
+        </th>
+        <th class="p-3 text-left text-base font-semibold text-gray-700 cursor-pointer" (click)="toggleSort('id_subject')">
+          ID Materia
+          <span *ngIf="sortBy === 'id_subject' && sortDirection === 'asc'">🔼</span>
+          <span *ngIf="sortBy === 'id_subject' && sortDirection === 'desc'">🔽</span>
+        </th>
+        <th class="p-3 text-left text-base font-semibold text-gray-700">Total de Evaluaciones</th>
+        <th class="p-3 text-left text-base font-semibold text-gray-700">Total Puntaje</th>
+        <th class="p-3 text-left text-base font-semibold text-gray-700">Recomendacion</th>
+        <th class="p-3 text-center text-base font-semibold text-gray-700">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let gradingMatrix of gradingMatrices | slice:(currentPage - 1) * itemsPerPage:(currentPage) * itemsPerPage">
+        <tr>
+          <td class="p-3 text-base text-gray-600">{{ gradingMatrix.id }}</td>
+          <td class="p-3 text-base text-gray-600">{{ gradingMatrix.id_subject }}</td>
+          <td class="p-3 text-base text-gray-600">{{ gradingMatrix.total_evaluations }}</td>
+          <td class="p-3 text-base text-gray-600">{{ gradingMatrix.total_score }}</td>
+          <td class="p-3 text-base text-gray-600">{{ gradingMatrix.recommendation }}</td>
+          <td class="p-3 text-center">
+            <!-- Botón para Editar Grading Matrix -->
+            <button (click)="viewGradingMatrix(gradingMatrix.id)" class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-3 rounded">
+              Editar
+            </button>
+
+            <!-- Botón para Eliminar Grading Matrix -->
+            <button (click)="deleteGradingMatrix(gradingMatrix)" class="bg-red-500 hover:bg-red-600 text-white py-2 px-3 ml-2 rounded">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div class="flex justify-between items-center mt-6">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="bg-gray-200 hover:bg-gray-300 text-gray-600 py-1 px-3 rounded">
+      Página anterior
+    </button>
+    <span class="text-sm text-gray-600">Página {{ currentPage }}</span>
+    <button (click)="nextPage()" [disabled]="gradingMatrices.length < itemsPerPage" class="bg-gray-200 hover:bg-gray-300 text-gray-600 py-1 px-3 rounded">
+      Siguiente página
+    </button>
+  </div>
+</div>

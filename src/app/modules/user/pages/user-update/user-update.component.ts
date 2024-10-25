@@ -17,12 +17,15 @@ import Swal from 'sweetalert2';  // Importa SweetAlert2
 export class UserUpdateComponent implements OnInit {
   username: string = '';  // Nombre de usuario ingresado
   full_name: string = ''; // Nombre completo ingresado
-  email: string = '';  // Email ingresado
-  phone_number: string = '';  // Número de teléfono ingresado
+  mail: string = '';  // Email ingresado (ahora es 'mail')
+  phone: string = '';  // Número de teléfono ingresado (ahora es 'phone')
+  password: string = '';  // Contraseña ingresada
+  confirmPassword: string = '';  // Confirmación de la contraseña
   id_role: number = 1;  // Rol predeterminado
   roles: Role[] = [];  // Lista de roles obtenidos
   userId: number = 0;  // ID del usuario a editar (inicializado en 0)
   phoneErrorMessage: string = ''; // Mensaje de error para el número de teléfono
+  passwordErrorMessage: string = ''; // Mensaje de error para la contraseña
 
   constructor(
     private userService: UserService,
@@ -57,9 +60,9 @@ export class UserUpdateComponent implements OnInit {
         const user = response.result;
         this.username = user.username;
         this.full_name = user.full_name; // Asigna el full_name
-        this.email = user.email;
-        this.phone_number = user.phone_number; // Asigna el número de teléfono
-        this.id_role = user.id_role;
+        this.mail = user.mail;  // Cambiado a 'mail'
+        this.phone = user.phone_number || '';  // Si es undefined, se asigna una cadena vacía
+        this.id_role = user.role_id;
       },
       (error) => {
         console.error('Error al obtener los detalles del usuario:', error);
@@ -69,17 +72,31 @@ export class UserUpdateComponent implements OnInit {
 
   // Método para validar el número de teléfono
   validatePhoneNumber(): void {
-    if (this.phone_number.length > 10) {
-      this.phone_number = this.phone_number.slice(0, 10); // Limitar a 10 dígitos
+    if (this.phone.length > 10) {
+      this.phone = this.phone.slice(0, 10); // Limitar a 10 dígitos
       this.phoneErrorMessage = 'El número de teléfono no puede tener más de 10 dígitos.';
     } else {
       this.phoneErrorMessage = ''; // Limpiar el mensaje si la longitud es correcta
     }
   }
 
+  // Método para validar la contraseña
+  validatePassword(): boolean {
+    if (this.password && this.password.length < 6) {
+      this.passwordErrorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+      return false;
+    } else if (this.password !== this.confirmPassword) {
+      this.passwordErrorMessage = 'Las contraseñas no coinciden.';
+      return false;
+    } else {
+      this.passwordErrorMessage = ''; // Limpiar el mensaje si las contraseñas coinciden
+      return true;
+    }
+  }
+
   // Método para actualizar el usuario
   updateUser(): void {
-    if (this.phone_number.length !== 10) {
+    if (this.phone.length !== 10) {
       Swal.fire({
         position: 'center',
         icon: 'error',
@@ -90,12 +107,24 @@ export class UserUpdateComponent implements OnInit {
       return;
     }
 
+    if (!this.validatePassword()) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Error en la contraseña',
+        text: this.passwordErrorMessage,
+        confirmButtonText: 'Ok'
+      });
+      return;
+    }
+
     const updatedUser: Partial<User> = {
       username: this.username,
       full_name: this.full_name, // Añadir full_name al objeto
-      email: this.email,
-      phone_number: this.phone_number, // Añadir phone_number al objeto
-      id_role: this.id_role,
+      mail: this.mail,           // Cambiado a 'mail'
+      phone_number: this.phone,         // Cambiado a 'phone'
+      role_id: this.id_role,
+      ...(this.password && { password: this.password })  // Solo incluir la contraseña si ha sido ingresada
     };
 
     this.userService.updateUser(this.userId, updatedUser as User).subscribe(

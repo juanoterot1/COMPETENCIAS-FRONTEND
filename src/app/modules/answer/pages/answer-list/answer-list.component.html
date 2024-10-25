@@ -1,0 +1,70 @@
+<div class="container mx-auto mt-10 p-4">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Listado de Respuestas</h2>
+  
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <label for="itemsPerPage" class="text-sm text-gray-600">Items por página:</label>
+        <select id="itemsPerPage" [(ngModel)]="itemsPerPage" (change)="updateItemsPerPage($event)" class="ml-2 p-1 border rounded">
+          <option [value]="5">5</option>
+          <option [value]="10">10</option>
+          <option [value]="15">15</option>
+          <option [value]="20">20</option>
+        </select>
+      </div>
+  
+      <div class="flex space-x-4">
+        <button (click)="navigateToCreateAnswer()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+          Crear Respuesta
+        </button>
+  
+        <button (click)="exportToExcel()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+          Exportar a Excel
+        </button>
+      </div>
+    </div>
+  
+    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="p-3 text-left text-base font-semibold text-gray-700">ID</th>
+          <th class="p-3 text-left text-base font-semibold text-gray-700">Descripción</th>
+          <th class="p-3 text-left text-base font-semibold text-gray-700">Evaluación</th>
+          <th class="p-3 text-left text-base font-semibold text-gray-700">Pregunta</th>
+          <th class="p-3 text-left text-base font-semibold text-gray-700">Usuario</th>
+          <th class="p-3 text-left text-base font-semibold text-gray-700">Puntuación</th>
+          <th class="p-3 text-center text-base font-semibold text-gray-700">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let answer of answers | slice:(currentPage - 1) * itemsPerPage:(currentPage) * itemsPerPage">
+          <tr>
+            <td class="p-3 text-base text-gray-600">{{ answer.id }}</td>
+            <td class="p-3 text-base text-gray-600">{{ answer.answer_description }}</td>
+            <td class="p-3 text-base text-gray-600">{{ answer.id_evaluation }}</td>
+            <td class="p-3 text-base text-gray-600">{{ answer.id_question }}</td>
+            <td class="p-3 text-base text-gray-600">{{ answer.id_user }}</td>
+            <td class="p-3 text-base text-gray-600">{{ answer.score }}</td>
+            <td class="p-3 text-center">
+              <button (click)="updateAnswer(answer.id)" class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-3 rounded">
+                Editar
+              </button>
+              <button (click)="deleteAnswer(answer)" class="bg-red-500 hover:bg-red-600 text-white py-2 px-3 ml-2 rounded">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  
+    <div class="flex justify-between items-center mt-6">
+      <button (click)="prevPage()" [disabled]="currentPage === 1" class="bg-gray-200 hover:bg-gray-300 text-gray-600 py-1 px-3 rounded">
+        Página anterior
+      </button>
+      <span class="text-sm text-gray-600">Página {{ currentPage }}</span>
+      <button (click)="nextPage()" [disabled]="answers.length < itemsPerPage" class="bg-gray-200 hover:bg-gray-300 text-gray-600 py-1 px-3 rounded">
+        Siguiente página
+      </button>
+    </div>
+  </div>
+  

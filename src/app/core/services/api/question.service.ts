@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environment/environment'; 
+import { environment } from '../../../../environment/environment';
 import { ApiResponse } from '../../models/api-response.model';
 import { Question } from '../../models/question.models';
 
@@ -9,12 +9,32 @@ import { Question } from '../../models/question.models';
   providedIn: 'root'
 })
 export class QuestionService {
-  private apiUrl = `${environment.apiUrl}/v1/questions`;
+  private apiUrl = `${environment.apiUrl}/questions`;
 
   constructor(private http: HttpClient) {}
 
-  getAllQuestions(): Observable<ApiResponse<Question[]>> {
+  // Obtener todas las preguntas
+  getQuestions(): Observable<ApiResponse<Question[]>> {
     return this.http.get<ApiResponse<Question[]>>(this.apiUrl);
-}
+  }
 
+  // Obtener una pregunta por ID
+  getQuestionById(id: number): Observable<ApiResponse<Question>> {
+    return this.http.get<ApiResponse<Question>>(`${this.apiUrl}/${id}`);
+  }
+
+  // Crear una nueva pregunta
+  createQuestion(question: Partial<Question>): Observable<ApiResponse<Question>> {
+    return this.http.post<ApiResponse<Question>>(this.apiUrl, question);
+  }
+
+  // Actualizar una pregunta existente
+  updateQuestion(id: number, question: Partial<Question>): Observable<ApiResponse<Question>> {
+    return this.http.put<ApiResponse<Question>>(`${this.apiUrl}/${id}`, question);
+  }
+
+  // Eliminar una pregunta
+  deleteQuestion(id: number): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
+  }
 }

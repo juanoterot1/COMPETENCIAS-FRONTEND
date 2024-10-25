@@ -1,20 +1,16 @@
+import { Subject } from './subject.model';
+import { Faculty } from './faculty.models';
+import { User } from './user.model';
+
 export interface Evaluation {
   id: number;
-  full_name: string;
-  dni: string;
-  job_title: string;
-  name_delegation: string;
-  date_generation: Date;
-  termination_days: number;
-  status?: string;
-  date_seniority?: Date;
-  account_manager_name?: string;
-  programmer_name?: string;
-  contract?: string;
-  service?: string;
-  id_account_manager?: number;  // Asegúrate de que esta propiedad existe
-  id_programmer?: number;       // Asegúrate de que esta propiedad existe
-
-  showDetails?: boolean;
-  responseStatus?: boolean;
+  name: string;
+  description: string;
+  id_subject: number; // Llave foránea
+  id_faculty: number; // Llave foránea
+  id_user: number; // Llave foránea
+  status: string;
+  subject?: Subject; // Relación con la materia
+  faculty?: Faculty; // Relación con la facultad
+  user?: User; // Relación con el usuario
 }

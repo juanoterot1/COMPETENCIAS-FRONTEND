@@ -18,10 +18,13 @@ export class UserCreateComponent implements OnInit {
   username: string = '';  // Nombre de usuario ingresado
   full_name: string = ''; // Nombre completo ingresado
   email: string = '';     // Email ingresado
-  phone_number: string = '';  
+  phone: string = '';     // Número de teléfono ingresado
+  password: string = '';  // Contraseña ingresada
+  confirmPassword: string = ''; // Confirmación de la contraseña
   id_role: number = 1;    // Rol predeterminado
   roles: Role[] = [];     // Lista de roles obtenidos
   phoneErrorMessage: string = ''; // Mensaje de error para el número de teléfono
+  passwordErrorMessage: string = ''; // Mensaje de error para la contraseña
 
   constructor(
     private userService: UserService,
@@ -47,17 +50,42 @@ export class UserCreateComponent implements OnInit {
 
   // Método para validar el número de teléfono
   validatePhoneNumber(): void {
-    if (this.phone_number.length > 10) {
-      this.phone_number = this.phone_number.slice(0, 10); // Limitar a 10 dígitos
+    if (this.phone.length > 10) {
+      this.phone = this.phone.slice(0, 10); // Limitar a 10 dígitos
       this.phoneErrorMessage = 'El número de teléfono no puede tener más de 10 dígitos.';
     } else {
       this.phoneErrorMessage = ''; // Limpiar el mensaje si la longitud es correcta
     }
   }
 
+  // Método para validar la contraseña
+  validatePassword(): boolean {
+    if (this.password.length < 6) {
+      this.passwordErrorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+      return false;
+    } else if (this.password !== this.confirmPassword) {
+      this.passwordErrorMessage = 'Las contraseñas no coinciden.';
+      return false;
+    } else {
+      this.passwordErrorMessage = ''; // Limpiar el mensaje si las contraseñas coinciden
+      return true;
+    }
+  }
+
   // Método para crear un nuevo usuario
   createUser(): void {
-    if (this.phone_number.length !== 10) {
+    if (!this.validatePassword()) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Error en la contraseña',
+        text: this.passwordErrorMessage,
+        confirmButtonText: 'Ok'
+      });
+      return;
+    }
+
+    if (this.phone.length !== 10) {
       Swal.fire({
         position: 'center',
         icon: 'error',
@@ -71,9 +99,10 @@ export class UserCreateComponent implements OnInit {
     const newUser: Partial<User> = {
       username: this.username,
       full_name: this.full_name, // Añadido el campo full_name
-      email: this.email,
-      phone_number: this.phone_number,  // Añadido el campo phone_number
-      id_role: this.id_role,
+      mail: this.email,          // Cambiado a 'mail' para que coincida con el modelo
+      phone_number: this.phone,         // Cambiado a 'phone'
+      password: this.password,   // Se incluye la contraseña en la creación
+      role_id: this.id_role,     // Asignación del rol seleccionado
     };
 
     this.userService.createUser(newUser as User).subscribe(
@@ -82,7 +111,7 @@ export class UserCreateComponent implements OnInit {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: `¡Evaluador ${this.username} ha sido creado exitosamente!`,
+          title: `¡Usuario ${this.username} ha sido creado exitosamente!`,
           showConfirmButton: false,
           timer: 2000
         }).then(() => {
@@ -90,12 +119,12 @@ export class UserCreateComponent implements OnInit {
         });
       },
       (error) => {
-        console.error('Error al crear el evaluador:', error);
+        console.error('Error al crear el usuario:', error);
         // Usar SweetAlert para mostrar un error centrado
         Swal.fire({
           position: 'center',
           icon: 'error',
-          title: 'Error al crear el evaluador',
+          title: 'Error al crear el usuario',
           text: 'Por favor, inténtalo de nuevo.',
           confirmButtonText: 'Ok'
         });

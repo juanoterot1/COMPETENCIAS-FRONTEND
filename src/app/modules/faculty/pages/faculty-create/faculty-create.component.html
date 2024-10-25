@@ -1,0 +1,27 @@
+<!-- Formulario de creación de facultad -->
+<div class="w-full max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl flex flex-col mt-8">
+  <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Crear Nueva Facultad</h2>
+
+  <div class="mb-8">
+    <h3 class="text-xl font-semibold mb-6 text-gray-700">Ingresa los detalles de la nueva Facultad</h3>
+    <form (ngSubmit)="createFaculty()" class="space-y-6">
+      
+      <!-- Campo Nombre de Facultad -->
+      <div>
+        <label for="faculty_name" class="block text-lg font-medium text-gray-600 mb-2">Nombre de Facultad</label>
+        <input type="text" id="faculty_name" [(ngModel)]="name" name="faculty_name" 
+               class="border p-3 rounded-md w-full text-lg" placeholder="Ingresa el nombre de la facultad" required>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="flex justify-end space-x-4">
+        <button type="button" (click)="cancel()" class="bg-gray-500 text-white py-3 px-6 rounded-md hover:bg-gray-600 text-lg">
+          Cancelar
+        </button>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md text-lg">
+          Crear Facultad
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

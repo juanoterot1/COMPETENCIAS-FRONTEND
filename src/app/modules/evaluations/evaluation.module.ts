@@ -5,29 +5,21 @@ import { HttpClientModule } from '@angular/common/http';
 
 // Importa los componentes standalone directamente
 import { EvaluationListComponent } from './pages/evaluation-list/evaluation-list.component';
-import { EvaluationDetailComponent } from './pages/evaluation-detail/evaluation-detail.component';
-import { EvaluationProductsDetailComponent } from './pages/evaluation-products-detail/evaluation-products-detail.component';
-import { EvaluationPDFDetailComponent } from './pages/evaluation-pdf-detail/evaluation-pdf-detail.component';
-import { EvaluationRelationUserComponent } from './pages/evaluation-relation-user/evaluation-relation-user.component';
-import { EvaluationFormComponent } from './pages/evaluation-form/evaluation-form.component'; // Importa el componente standalone
+import { EvaluationCreateComponent } from './pages/evaluation-create/evaluation-create.component';
+import { EvaluationUpdateComponent } from './pages/evaluation-update/evaluation-update.component';
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
+    // Importa los componentes standalone aquí
     EvaluationListComponent,
-    EvaluationDetailComponent,
-    EvaluationProductsDetailComponent,
-    EvaluationPDFDetailComponent,
-    EvaluationRelationUserComponent,
-    EvaluationFormComponent, // Importa directamente como standalone
+    EvaluationCreateComponent,  // Componente para crear Evaluación
+    EvaluationUpdateComponent,  // Componente para actualizar Evaluación
     RouterModule.forChild([
-      { path: '', component: EvaluationListComponent }, // Página principal del listado
-      { path: 'form/:id', component: EvaluationFormComponent }, // Ruta del formulario
-      { path: 'products/:id', component: EvaluationProductsDetailComponent }, // Detalles de productos
-      { path: 'pdf/:id', component: EvaluationPDFDetailComponent }, // Detalles en PDF
-      { path: 'relation-user/:id', component: EvaluationRelationUserComponent }, // Relación con usuario
-      { path: ':id', component: EvaluationDetailComponent }, // Detalles de la evaluación, al final para evitar conflictos con otras rutas
+      { path: '', component: EvaluationListComponent },  // Ruta para la lista de Evaluaciones
+      { path: 'create', component: EvaluationCreateComponent },  // Ruta para crear Evaluación
+      { path: 'update/:id', component: EvaluationUpdateComponent }  // Ruta para actualizar Evaluación
     ])
   ]
 })

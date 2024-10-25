@@ -1,0 +1,53 @@
+<div class="w-full max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl flex flex-col mt-8">
+  <h2 class="text-3xl font-bold text-center mb-6">Crear Nueva Evaluación</h2>
+
+  <form (ngSubmit)="createEvaluation()" class="space-y-6">
+    <!-- Nombre -->
+    <div>
+      <label for="name" class="block text-lg font-medium">Nombre</label>
+      <input type="text" id="name" [(ngModel)]="name" name="name" class="border p-3 rounded-md w-full" required />
+    </div>
+
+    <!-- Descripción -->
+    <div>
+      <label for="description" class="block text-lg font-medium">Descripción</label>
+      <input type="text" id="description" [(ngModel)]="description" name="description" class="border p-3 rounded-md w-full" required />
+    </div>
+
+    <!-- Seleccionar Materia -->
+    <div>
+      <label for="id_subject" class="block text-lg font-medium">Materia</label>
+      <select id="id_subject" [(ngModel)]="id_subject" name="id_subject" class="border p-3 rounded-md w-full" required>
+        <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+      </select>
+    </div>
+
+    <!-- Seleccionar Facultad -->
+    <div>
+      <label for="id_faculty" class="block text-lg font-medium">Facultad</label>
+      <select id="id_faculty" [(ngModel)]="id_faculty" name="id_faculty" class="border p-3 rounded-md w-full" required>
+        <option *ngFor="let faculty of faculties" [value]="faculty.id">{{ faculty.name }}</option>
+      </select>
+    </div>
+
+    <!-- Seleccionar Usuario -->
+    <div>
+      <label for="id_user" class="block text-lg font-medium">Usuario</label>
+      <select id="id_user" [(ngModel)]="id_user" name="id_user" class="border p-3 rounded-md w-full" required>
+        <option *ngFor="let user of users" [value]="user.id">{{ user.username }}</option>
+      </select>
+    </div>
+
+    <!-- Estado -->
+    <div>
+      <label for="status" class="block text-lg font-medium">Estado</label>
+      <input type="text" id="status" [(ngModel)]="status" name="status" class="border p-3 rounded-md w-full" required />
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end space-x-4">
+      <button type="button" (click)="cancel()" class="bg-gray-500 text-white py-3 px-6 rounded-md hover:bg-gray-600">Cancelar</button>
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md">Crear</button>
+    </div>
+  </form>
+</div>

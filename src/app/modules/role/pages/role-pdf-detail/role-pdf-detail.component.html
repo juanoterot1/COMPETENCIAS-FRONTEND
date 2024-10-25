@@ -1,0 +1,22 @@
+<div *ngIf="!isLoading" id="print-section">
+    <div class="container mx-auto mt-6 p-4 max-w-3xl border-2 border-gray-300 rounded-lg">
+      <h2 class="text-2xl font-semibold mt-8 text-center">Revisión de Rol</h2>
+      <div class="mb-6 border-b border-gray-400 pb-4">
+        <h3 class="text-lg font-semibold mb-2">Información del Rol</h3>
+        <p><strong>Nombre del Rol:</strong> {{ role.role_name }}</p>
+        <p><strong>ID del Rol:</strong> {{ role.id }}</p>
+        <p><strong>Fecha de Creación:</strong> {{ role.created_at }}</p>
+      </div>
+  
+      <div class="flex justify-end mt-4 no-print">
+        <button [printTitle]="printTitle" printSectionId="print-section" ngxPrint class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Imprimir PDF
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="isLoading">
+    Cargando datos, por favor espere...
+  </div>
+  

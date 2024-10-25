@@ -8,7 +8,7 @@ import { environment } from '../../../../environment/environment';
   providedIn: 'root'
 })
 export class HomeService {
-  private apiUrl = `${environment.apiUrl}/v1`; // Asegúrate de que esta URL es la correcta
+  private apiUrl = `${environment.apiUrl}/`; // Asegúrate de que esta URL es la correcta
 
   constructor(private http: HttpClient) {}
 

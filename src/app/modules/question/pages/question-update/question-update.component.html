@@ -1,0 +1,39 @@
+<div class="w-full max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl flex flex-col mt-8">
+  <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Editar Pregunta</h2>
+
+  <div class="mb-8">
+    <h3 class="text-xl font-semibold mb-6 text-gray-700">Modifica los detalles de la pregunta</h3>
+    <form (ngSubmit)="updateQuestion()" class="space-y-6">
+      
+      <!-- Nombre de la Pregunta -->
+      <div>
+        <label for="name" class="block text-lg font-medium text-gray-600 mb-2">Nombre de la Pregunta</label>
+        <input type="text" id="name" [(ngModel)]="name" name="name" class="border p-3 rounded-md w-full" required />
+      </div>
+  
+      <!-- Valor de la Pregunta -->
+      <div>
+        <label for="value" class="block text-lg font-medium text-gray-600 mb-2">Valor</label>
+        <input type="number" id="value" [(ngModel)]="value" name="value" class="border p-3 rounded-md w-full" required />
+      </div>
+  
+      <!-- Evaluación -->
+      <div>
+        <label for="evaluation" class="block text-lg font-medium text-gray-600 mb-2">Evaluación</label>
+        <select id="evaluation" [(ngModel)]="id_evaluation" name="id_evaluation" class="border p-3 rounded-md w-full" required>
+          <option *ngFor="let evaluation of evaluations" [value]="evaluation.id">{{ evaluation.name }}</option>
+        </select>
+      </div>
+  
+      <!-- Botones -->
+      <div class="flex justify-end space-x-4">
+        <button type="button" (click)="cancel()" class="bg-gray-500 text-white py-3 px-6 rounded-md hover:bg-gray-600">
+          Cancelar
+        </button>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md">
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="container mx-auto mt-10 p-4">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">Listado de Materias</h2>
+
+  <div class="flex justify-between items-center mb-4">
+    <!-- Selector de elementos por página -->
+    <div>
+      <label for="itemsPerPage" class="text-sm text-gray-600">Items por página:</label>
+      <select id="itemsPerPage" [(ngModel)]="itemsPerPage" (change)="updateItemsPerPage($event)" class="ml-2 p-1 border rounded">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="15">15</option>
+        <option [value]="20">20</option>
+      </select>
+    </div>
+
+    <!-- Botones de Crear Rol y Exportar a Excel -->
+    <div class="flex space-x-4">
+      <!-- Botón para crear rol -->
+      <button (click)="navigateToCreateSubject()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+        Crear Rol
+      </button>
+
+      <!-- Botón para exportar a Excel -->
+      <button (click)="exportToExcel()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+        Exportar a Excel
+      </button>
+    </div>
+  </div>
+
+  
+
+  <!-- Tabla de materias -->
+  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="p-3 text-left text-base font-semibold text-gray-700">ID</th>
+        <th class="p-3 text-left text-base font-semibold text-gray-700">Nombre de la Materia</th>
+        <th class="p-3 text-left text-base font-semibold text-gray-700">Código</th>
+        <th class="p-3 text-left text-base font-semibold text-gray-700">Facultad</th>
+        <th class="p-3 text-center text-base font-semibold text-gray-700">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let subject of subjects | slice:(currentPage - 1) * itemsPerPage:(currentPage) * itemsPerPage">
+        <tr>
+          <td class="p-3 text-base text-gray-600">{{ subject.id }}</td>
+          <td class="p-3 text-base text-gray-600">{{ subject.name }}</td>
+          <td class="p-3 text-base text-gray-600">{{ subject.code }}</td>
+          <td class="p-3 text-base text-gray-600">{{ subject.id_faculty }}</td>
+          <td class="p-3 text-center">
+            <!-- Botón para Editar Materia -->
+            <button (click)="updateSubject(subject.id)" class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-3 rounded">
+              Editar
+            </button>
+
+            <!-- Botón para Eliminar Materia -->
+            <button (click)="deleteSubject(subject)" class="bg-red-500 hover:bg-red-600 text-white py-2 px-3 ml-2 rounded">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div class="flex justify-between items-center mt-6">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="bg-gray-200 hover:bg-gray-300 text-gray-600 py-1 px-3 rounded">
+      Página anterior
+    </button>
+    <span class="text-sm text-gray-600">Página {{ currentPage }}</span>
+    <button (click)="nextPage()" [disabled]="subjects.length < itemsPerPage" class="bg-gray-200 hover:bg-gray-300 text-gray-600 py-1 px-3 rounded">
+      Siguiente página
+    </button>
+  </div>
+</div>

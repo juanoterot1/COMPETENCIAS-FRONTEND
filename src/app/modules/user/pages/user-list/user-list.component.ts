@@ -58,13 +58,14 @@ export class UserListComponent implements OnInit {
     this.userService.getUsers(this.usernameFilter, this.emailFilter, this.fullNameFilter, this.roleFilter, this.phoneNumberFilter).subscribe(
       (response) => {
         this.users = response.result;
-        this.totalItems = this.users.length;
+        this.totalItems = this.users.length; // No es necesario buscar el role.name si solo mostrarás role_id
       },
       (error) => {
         console.error('Error fetching users:', error);
       }
     );
   }
+  
 
   fetchRoles(): void {
     this.roleService.getRoles().subscribe(
@@ -169,7 +170,7 @@ export class UserListComponent implements OnInit {
       ID: user.id,
       Username: user.username,
       'Full Name': user.full_name,
-      Email: user.email,
+      Email: user.mail,
       'Phone Number': user.phone_number, // Agregar número de teléfono
       Role: user.role?.name || 'Sin Rol'
     }));
