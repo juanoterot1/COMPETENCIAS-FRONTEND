@@ -1,0 +1,54 @@
+<aside class="w-80 bg-gradient-to-b from-black via-black to-[#014694] text-white flex flex-col h-screen">
+  <!-- Header -->
+  <div class="p-4 bg-transparent flex items-center justify-center">
+    <span class="ml-4 text-xl font-semibold">Competencias FI</span>
+  </div>
+
+  <!-- Buttons (Modules) -->
+  <nav class="flex-grow p-4">
+    <ul>
+      <li class="mb-2">
+        <a [routerLink]="['/users']" class="flex items-center p-2 rounded bg-transparent hover:bg-black hover:bg-opacity-20">
+          <ng-icon name="bootstrapPersonAdd" class="mr-2"></ng-icon>
+          <span>Usuarios</span>
+        </a>
+      </li>
+      <li class="mb-2">
+        <a [routerLink]="['/faculty']" class="flex items-center p-2 rounded bg-transparent hover:bg-black hover:bg-opacity-20">
+          <ng-icon name="bootstrapPersonAdd" class="mr-2"></ng-icon>
+          <span>Facultades</span>
+        </a>
+      </li>
+      <li class="mb-2">
+        <a [routerLink]="['/subjects']" class="flex items-center p-2 rounded bg-transparent hover:bg-black hover:bg-opacity-20">
+          <ng-icon name="bootstrapPersonAdd" class="mr-2"></ng-icon>
+          <span>Asignaturas</span>
+        </a>
+      </li>
+      <li class="mb-2">
+        <a [routerLink]="['/evaluations']" class="flex items-center p-2 rounded bg-transparent hover:bg-black hover:bg-opacity-20">
+          <ng-icon name="bootstrapPersonAdd" class="mr-2"></ng-icon>
+          <span>Evaluaciones</span>
+        </a>
+      </li>
+      <li class="mb-2">
+        <a [routerLink]="['/questions']" class="flex items-center p-2 rounded bg-transparent hover:bg-black hover:bg-opacity-20">
+          <ng-icon name="bootstrapPersonAdd" class="mr-2"></ng-icon>
+          <span>Preguntas</span>
+        </a>
+      </li>
+      <li class="mb-2">
+        <a [routerLink]="['/answers']" class="flex items-center p-2 rounded bg-transparent hover:bg-black hover:bg-opacity-20">
+          <ng-icon name="bootstrapPersonAdd" class="mr-2"></ng-icon>
+          <span>Respuestas</span>
+        </a>
+      </li>
+      
+    </ul>
+  </nav>
+
+  <!-- Footer -->
+  <footer class="p-4 bg-transparent flex items-center justify-center mt-auto">
+    <img src="assets/logo/NetGroupLogo.png" alt="Logo Company" class="w-26 h-16">
+  </footer>
+</aside>

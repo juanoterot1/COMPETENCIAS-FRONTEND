@@ -1,0 +1,120 @@
+<div class="container mx-auto mt-10 px-4">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">Listado de Usuarios</h2>
+
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <label for="itemsPerPage" class="text-sm text-gray-600">Items por página:</label>
+      <select id="itemsPerPage" [(ngModel)]="itemsPerPage" (change)="updateItemsPerPage($event)" class="ml-2 p-1 border rounded">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="15">15</option>
+        <option [value]="20">20</option>
+      </select>
+    </div>
+
+    <div class="flex space-x-4">
+      <button (click)="toggleFilters()" class="bg-customPurple-100 hover:bg-customPurple-200 text-white py-2 px-4 rounded">
+        Filtros
+      </button>
+      <button (click)="createUser()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+        Crear Usuario
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="showFilters" class="mb-4 p-4 border rounded bg-gray-50">
+    <div class="grid grid-cols-3 gap-4">
+      <input [(ngModel)]="usernameFilter" placeholder="Filtrar por Username" class="p-2 border rounded" />
+      <input [(ngModel)]="fullNameFilter" placeholder="Filtrar por Nombre Completo" class="p-2 border rounded" />
+      <input [(ngModel)]="mailFilter" placeholder="Filtrar por Email" class="p-2 border rounded" />
+      <input [(ngModel)]="dniFilter" placeholder="Filtrar por DNI" class="p-2 border rounded" />
+      <select [(ngModel)]="roleIdFilter" class="p-2 border rounded">
+        <option [ngValue]="undefined">Rol</option>
+        <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+      </select>
+    </div>
+    <div class="mt-4 flex justify-between">
+      <div class="flex space-x-4">
+        <button (click)="applyFilters()" class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-4 rounded">
+          Aplicar Filtros
+        </button>
+        <button (click)="resetFilters()" class="bg-customPurple-100 hover:bg-customPurple-200 text-white py-2 px-4 rounded">
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">Expandir</th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700 cursor-pointer" (click)="toggleSort('id')">
+          ID
+          <span *ngIf="sortBy === 'id' && sortDirection === 'asc'">🔼</span>
+          <span *ngIf="sortBy === 'id' && sortDirection === 'desc'">🔽</span>
+        </th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">Username</th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">Nombre Completo</th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">Email</th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">DNI</th>
+        <th class="p-3 text-center text-sm font-semibold text-gray-700">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let user of users; let i = index">
+        <tr>
+          <td class="p-3 text-sm text-gray-600">
+            <button (click)="toggleDetails(i)" class="focus:outline-none">
+              <span *ngIf="!user.showDetails">➕</span>
+              <span *ngIf="user.showDetails">➖</span>
+            </button>
+          </td>
+          <td class="p-3 text-sm text-gray-600">{{ user.id }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ user.username }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ user.full_name }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ user.mail }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ user.dni }}</td>
+          <td class="p-3 text-left">
+            <button (click)="editUser(user.id)" class="bg-yellow-400 hover:bg-yellow-500 text-white text-sm font-medium py-1 px-3 rounded ml-2 transition duration-150">
+              Editar
+            </button>
+            <button (click)="deleteUser(user.id)" class="bg-red-400 hover:bg-red-500 text-white text-sm font-medium py-1 px-3 rounded ml-2 transition duration-150">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="user.showDetails">
+          <td colspan="7" class="p-4 bg-gray-50 text-sm text-gray-700">
+            <div class="grid grid-cols-2 gap-4">
+              <div><strong>Teléfono:</strong> {{ user.phone }}</div>
+              <div><strong>Fecha de Creación:</strong> {{ user.created_at }}</div>
+              <div><strong>Última Actualización:</strong> {{ user.updated_at }}</div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <div class="flex justify-between items-center mt-6">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="bg-gray-200 hover:bg-gray-300 text-gray-600 text-sm font-medium py-1 px-3 rounded transition duration-150">
+      Página anterior
+    </button>
+
+    <span class="text-sm text-gray-600">Página {{ currentPage }}</span>
+
+    <button (click)="nextPage()" [disabled]="users.length < itemsPerPage" class="bg-gray-200 hover:bg-gray-300 text-gray-600 text-sm font-medium py-1 px-3 rounded transition duration-150">
+      Siguiente página
+    </button>
+  </div>
+
+  <app-confirm-dialog
+    *ngIf="showDialog"
+    [title]="dialogTitle"
+    [message]="dialogMessage"
+    (confirm)="onConfirmDialog()"
+    (cancel)="onCancelDialog()"
+  >
+  </app-confirm-dialog>
+</div>

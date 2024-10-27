@@ -1,0 +1,77 @@
+<div class="container mx-auto mt-10 px-6 max-w-3xl">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Crear Nuevo Usuario</h2>
+
+  <form (ngSubmit)="createUser()" class="bg-white shadow-lg rounded-lg px-8 py-10">
+    <!-- Mensajes de Error y Éxito -->
+    <div *ngIf="errorMessage" class="bg-red-100 border border-red-500 text-red-800 px-4 py-3 rounded mb-6 text-center">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="bg-green-100 border border-green-500 text-green-800 px-4 py-3 rounded mb-6 text-center">
+      {{ successMessage }}
+    </div>
+
+    <!-- Nombre de Usuario -->
+    <div class="mb-5">
+      <label class="block text-gray-700 text-sm font-semibold mb-2" for="username">Nombre de Usuario</label>
+      <input [(ngModel)]="newUser.username" name="username" type="text" placeholder="Ejemplo: jsanclemente"
+        class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none" required>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="mb-5">
+      <label class="block text-gray-700 text-sm font-semibold mb-2" for="password">Contraseña</label>
+      <input [(ngModel)]="newUser.password" name="password" type="password" placeholder="********"
+        class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none" required>
+    </div>
+
+    <!-- Nombre Completo -->
+    <div class="mb-5">
+      <label class="block text-gray-700 text-sm font-semibold mb-2" for="full_name">Nombre Completo</label>
+      <input [(ngModel)]="newUser.full_name" name="full_name" type="text" placeholder="Ejemplo: Jair Sanclemente"
+        class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none" required>
+    </div>
+
+    <!-- Teléfono -->
+    <div class="mb-5">
+      <label class="block text-gray-700 text-sm font-semibold mb-2" for="phone">Teléfono</label>
+      <input [(ngModel)]="newUser.phone" name="phone" type="text" placeholder="Ejemplo: +57 3187652224"
+        class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none">
+    </div>
+
+    <!-- Correo Electrónico -->
+    <div class="mb-5">
+      <label class="block text-gray-700 text-sm font-semibold mb-2" for="mail">Correo Electrónico</label>
+      <input [(ngModel)]="newUser.mail" name="mail" type="email" placeholder="Ejemplo: correo@dominio.com"
+        class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none" required>
+    </div>
+
+    <!-- DNI -->
+    <div class="mb-5">
+      <label class="block text-gray-700 text-sm font-semibold mb-2" for="dni">DNI</label>
+      <input [(ngModel)]="newUser.dni" name="dni" type="text" placeholder="Ejemplo: 12345678"
+        class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none" required>
+    </div>
+
+    <!-- Rol -->
+    <div class="mb-8">
+      <label class="block text-gray-700 text-sm font-semibold mb-2" for="role_id">Rol</label>
+      <select [(ngModel)]="newUser.role_id" name="role_id"
+        class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none" required>
+        <option [ngValue]="null" disabled selected>Seleccione un Rol</option>
+        <option *ngFor="let role of roles" [ngValue]="role.id">{{ role.name }}</option>
+      </select>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="flex items-center justify-between">
+      <button type="submit" [disabled]="isSubmitting"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+        Crear Usuario
+      </button>
+      <button type="button" (click)="cancelCreation()"
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

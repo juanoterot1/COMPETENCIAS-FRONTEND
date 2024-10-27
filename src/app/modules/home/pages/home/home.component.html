@@ -1,0 +1,63 @@
+<div class="flex flex-col p-16 h-full">
+  <!-- Header Section -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+    <h1 class="text-4xl text-gray-700 font-bold mb-4 md:mb-0">
+      Bienvenido a Competencias FI
+    </h1>
+    <button class="bg-gradient-to-r from-black via-black to-[#014694] text-white py-2 px-8 rounded-full hover:from-[#014694] hover:via-black hover:to-black transition duration-300 md:ml-auto">
+      <a [routerLink]="['/evaluations']">Ver evaluaciones</a>
+    </button>
+  </div>
+
+  <!-- Divider Line -->
+  <hr class="border-t-2 border-gray-400 mb-8">
+
+  <!-- Indicadores Section -->
+  <div class="bg-gray-100 p-6 rounded-lg mb-8">
+    <h2 class="text-lg bg-gradient-to-r from-black via-black to-[#014694] text-white py-2 px-4 rounded-full inline-block mb-6">
+      Indicadores generales
+    </h2>
+
+    <!-- Grid de Indicadores -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Indicador de Evaluaciones Totales -->
+      <div class="flex items-center bg-white shadow-lg rounded-xl p-6 transition-transform transform hover:scale-105">
+        <div class="flex-shrink-0">
+          <svg class="h-16 w-16 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17l4 4 4-4m-4-5v12" />
+          </svg>
+        </div>
+        <div class="ml-6">
+          <p class="text-md font-medium text-gray-500">Evaluaciones Totales</p>
+          <p class="text-3xl font-semibold text-blue-600">{{ totalEvaluations }}</p>
+        </div>
+      </div>
+
+      <!-- Indicador de Evaluaciones Sin Respuesta -->
+      <div class="flex items-center bg-white shadow-lg rounded-xl p-6 transition-transform transform hover:scale-105">
+        <div class="flex-shrink-0">
+          <svg class="h-16 w-16 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m2 6H6a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <div class="ml-6">
+          <p class="text-md font-medium text-gray-500">Evaluaciones Sin Respuesta</p>
+          <p class="text-3xl font-semibold text-red-600">{{ sinRespuestaCount }}</p>
+        </div>
+      </div>
+
+      <!-- Indicador de Evaluaciones Con Respuesta -->
+      <div class="flex items-center bg-white shadow-lg rounded-xl p-6 transition-transform transform hover:scale-105">
+        <div class="flex-shrink-0">
+          <svg class="h-16 w-16 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7 20h10a2 2 0 002-2V6a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div class="ml-6">
+          <p class="text-md font-medium text-gray-500">Evaluaciones Con Respuesta</p>
+          <p class="text-3xl font-semibold text-green-600">{{ conRespuestaCount }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

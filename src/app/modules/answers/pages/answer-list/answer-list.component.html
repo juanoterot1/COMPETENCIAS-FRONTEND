@@ -1,0 +1,88 @@
+<div class="container mx-auto mt-10 px-4">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">Listado de Respuestas</h2>
+  </div>
+
+  <!-- Filtros y Paginación -->
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <label for="itemsPerPage" class="text-sm text-gray-600">Items por página:</label>
+      <select id="itemsPerPage" [(ngModel)]="itemsPerPage" (change)="fetchAnswers()" class="ml-2 p-1 border rounded">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="15">15</option>
+        <option [value]="20">20</option>
+      </select>
+    </div>
+
+    <div class="flex space-x-4">
+      <button (click)="toggleFilters()" class="bg-customPurple-100 hover:bg-customPurple-200 text-white py-2 px-4 rounded">
+        Filtros
+      </button>
+      <button (click)="createAnswer()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+        Crear Respuesta
+      </button>
+    </div>
+  </div>
+
+  <!-- Formulario de Filtros -->
+  <div *ngIf="showFilters" class="mb-4 p-4 border rounded bg-gray-50">
+    <div class="grid grid-cols-2 gap-4">
+      <input [(ngModel)]="idEvaluationFilter" type="number" placeholder="Filtrar por ID de Evaluación" class="p-2 border rounded" />
+    </div>
+    <div class="mt-4 flex space-x-4">
+      <button (click)="applyFilters()" class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-4 rounded">
+        Aplicar Filtros
+      </button>
+      <button (click)="resetFilters()" class="bg-customPurple-100 hover:bg-customPurple-200 text-white py-2 px-4 rounded">
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla de Respuestas -->
+  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">ID</th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">Descripción</th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">ID Evaluación</th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">ID Pregunta</th>
+        <th class="p-3 text-left text-sm font-semibold text-gray-700">Puntaje</th>
+        <th class="p-3 text-center text-sm font-semibold text-gray-700">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let answer of answers">
+        <tr>
+          <td class="p-3 text-sm text-gray-600">{{ answer.id }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ answer.answer_description }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ answer.id_evaluation }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ answer.id_question }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ answer.score }}</td>
+          <td class="p-3 text-center">
+            <button (click)="editAnswer(answer.id)" class="bg-yellow-400 hover:bg-yellow-500 text-white text-sm font-medium py-1 px-3 rounded ml-2 transition duration-150">
+              Editar
+            </button>
+            <button (click)="deleteAnswer(answer.id)" class="bg-red-400 hover:bg-red-500 text-white text-sm font-medium py-1 px-3 rounded ml-2 transition duration-150">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div class="flex justify-between items-center mt-6">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="bg-gray-200 hover:bg-gray-300 text-gray-600 text-sm font-medium py-1 px-3 rounded transition duration-150">
+      Página anterior
+    </button>
+
+    <span class="text-sm text-gray-600">Página {{ currentPage }}</span>
+
+    <button (click)="nextPage()" [disabled]="answers.length < itemsPerPage" class="bg-gray-200 hover:bg-gray-300 text-gray-600 text-sm font-medium py-1 px-3 rounded transition duration-150">
+      Siguiente página
+    </button>
+  </div>
+</div>

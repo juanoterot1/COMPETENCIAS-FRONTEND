@@ -1,0 +1,110 @@
+<div class="w-full max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl flex flex-col mt-8">
+  <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Editar Usuario</h2>
+
+  <div class="mb-8">
+    <h3 class="text-xl font-semibold mb-6 text-gray-700">Modifica los detalles del usuario</h3>
+    <form (ngSubmit)="updateUser()" class="space-y-6">
+      <!-- Campo Número de Cédula -->
+      <div>
+        <label for="dni" class="block text-lg font-medium text-gray-600 mb-2">Número de Cédula</label>
+        <input
+          type="text"
+          id="dni"
+          [(ngModel)]="dni"
+          name="dni"
+          class="border p-3 rounded-md w-full text-lg"
+          placeholder="Ingresa el número de cédula"
+          required
+        />
+      </div>
+
+      <!-- Campo Nombre de Usuario -->
+      <div>
+        <label for="username" class="block text-lg font-medium text-gray-600 mb-2">Nombre de Usuario</label>
+        <input
+          type="text"
+          id="username"
+          [(ngModel)]="username"
+          name="username"
+          class="border p-3 rounded-md w-full text-lg"
+          placeholder="Ingresa el nombre de usuario"
+          required
+        />
+      </div>
+
+      <!-- Campo Nombre Completo -->
+      <div>
+        <label for="full_name" class="block text-lg font-medium text-gray-600 mb-2">Nombre Completo</label>
+        <input
+          type="text"
+          id="full_name"
+          [(ngModel)]="full_name"
+          name="full_name"
+          class="border p-3 rounded-md w-full text-lg"
+          placeholder="Ingresa el nombre completo"
+          required
+        />
+      </div>
+
+      <!-- Campo de Correo Electrónico -->
+      <div>
+        <label for="mail" class="block text-lg font-medium text-gray-600 mb-2">Correo Electrónico</label>
+        <input
+          type="email"
+          id="mail"
+          [(ngModel)]="mail"
+          name="mail"
+          class="border p-3 rounded-md w-full text-lg"
+          placeholder="Ingresa el correo electrónico"
+          required
+        />
+      </div>
+
+      <!-- Campo Rol -->
+      <div>
+        <label for="role_id" class="block text-lg font-medium text-gray-600 mb-2">Rol</label>
+        <select
+          id="role_id"
+          [(ngModel)]="role_id"
+          name="role_id"
+          class="border p-3 rounded-md w-full text-lg"
+          required
+        >
+          <option *ngFor="let role of roles" [value]="role.id">
+            {{ role.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Campo Contraseña -->
+      <div>
+        <label for="password" class="block text-lg font-medium text-gray-600 mb-2">Contraseña (dejar en blanco para no cambiar)</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          class="border p-3 rounded-md w-full text-lg"
+          placeholder="Ingresa la nueva contraseña"
+        />
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          (click)="cancel()"
+          class="bg-gray-500 text-white py-3 px-6 rounded-md hover:bg-gray-600 text-lg"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md text-lg"
+        >
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
