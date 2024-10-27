@@ -1,11 +1,11 @@
 <div class="flex h-screen min-h-screen">
   <!-- Sidebar -->
-  <app-sidebar *ngIf="sidebarVisible"></app-sidebar>
+  <app-sidebar *ngIf="isAuthenticated && sidebarVisible"></app-sidebar>
 
   <!-- Main Content Area -->
   <div class="flex flex-col flex-grow bg-customWhite-50">
     <!-- Header -->
-    <app-header (toggleSidebar)="toggleSidebar()"></app-header>
+    <app-header *ngIf="isAuthenticated" (toggleSidebar)="toggleSidebar()"></app-header>
 
     <!-- Loading Bar -->
     <app-loading-bar></app-loading-bar>
@@ -16,6 +16,6 @@
     </div>
 
     <!-- Footer -->
-    <app-footer class="mt-auto"></app-footer>
+    <app-footer *ngIf="isAuthenticated" class="mt-auto"></app-footer>
   </div>
 </div>

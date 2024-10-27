@@ -7,7 +7,7 @@ import { loadingInterceptor } from './core/services/interceptor/loading.intercep
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes),  // Asegúrate de que provideRouter está incluido con las rutas correctas
     provideHttpClient(
       withInterceptors([loadingInterceptor])
     ),
