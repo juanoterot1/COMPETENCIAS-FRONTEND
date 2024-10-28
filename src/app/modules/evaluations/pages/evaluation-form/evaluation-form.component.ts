@@ -53,10 +53,9 @@ export class EvaluationFormComponent implements OnInit {
     this.questionService.getQuestions(1, 100).subscribe({
       next: (response) => {
         this.questions = response.result.filter((q) => q.id_evaluation === this.evaluationId);
-
-        // Cargar respuestas para cada pregunta
+  
         this.questions.forEach((question) => {
-          this.answerService.getAnswers(1, 10, question.id).subscribe({
+          this.answerService.getAnswers(1, 10, this.evaluationId, question.id).subscribe({
             next: (answerResponse) => {
               this.answers[question.id] = answerResponse.result;
             },
@@ -71,6 +70,10 @@ export class EvaluationFormComponent implements OnInit {
       }
     });
   }
+  
+  
+  
+  
 
   submitForm(): void {
     const answersToSave = this.questions.map((question) => ({
@@ -79,7 +82,8 @@ export class EvaluationFormComponent implements OnInit {
       id_question: question.id,
       score: 0,
     }));
-
+  
+    // Guardar cada respuesta
     answersToSave.forEach((answerData) => {
       this.answerService.createAnswer(answerData, 1).subscribe({
         next: () => console.log(`Respuesta para pregunta ${answerData.id_question} guardada`),
@@ -89,11 +93,19 @@ export class EvaluationFormComponent implements OnInit {
         }
       });
     });
-
-    Swal.fire('Guardado', 'Las respuestas se guardaron correctamente.', 'success').then(() => {
+  
+    // Mostrar el mensaje de éxito con texto adicional
+    Swal.fire({
+      title: '¡Evaluación completada!',
+      html: 'Tu evaluación ha sido guardada correctamente.<br><strong>En breve podrás visualizar la retroalimentación de la inteligencia artificial.</strong>',
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    }).then(() => {
+      // Redirigir después de que el usuario confirme el mensaje
       this.router.navigate(['/evaluations']);
     });
   }
+  
 
   cancel(): void {
     this.router.navigate(['/evaluations']);

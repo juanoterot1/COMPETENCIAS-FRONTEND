@@ -26,6 +26,15 @@
              class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500" required>
     </div>
 
+    <!-- Menú desplegable de Evaluaciones -->
+    <div class="mb-6">
+      <label class="block text-gray-700 text-lg font-semibold mb-2" for="evaluation">Evaluación</label>
+      <select [(ngModel)]="newQuestion.id_evaluation" name="evaluation" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500" required>
+        <option value="" disabled selected>Seleccione una evaluación</option>
+        <option *ngFor="let evaluation of evaluations" [value]="evaluation.id">{{ evaluation.name }}</option>
+      </select>
+    </div>
+
     <!-- Botones de Acción -->
     <div class="flex justify-between space-x-4 mt-8">
       <button type="submit" [disabled]="isSubmitting" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg focus:outline-none focus:shadow-outline">

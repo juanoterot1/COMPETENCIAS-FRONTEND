@@ -28,16 +28,26 @@ export class AnswerService {
   getAnswers(
     page: number = 1,
     perPage: number = 10,
-    idEvaluation?: number
+    idEvaluation?: number,
+    idQuestion?: number
   ): Observable<ApiResponse<Answer[]>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('per_page', perPage.toString());
-
-    if (idEvaluation) params = params.set('id_evaluation', idEvaluation.toString());
-
-    return this.http.get<ApiResponse<Answer[]>>(this.apiUrl, { params });
+  
+    if (idEvaluation) {
+      params = params.set('id_evaluation', idEvaluation.toString());
+    }
+    if (idQuestion) {
+      params = params.set('id_question', idQuestion.toString());
+    }
+  
+    return this.http.get<ApiResponse<Answer[]>>(`${this.apiUrl}`, { params });
   }
+  
+  
+  
+  
 
   updateAnswer(id: number, answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
     return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, {
