@@ -4,6 +4,10 @@
     <h1 class="text-4xl text-gray-700 font-bold mb-4 md:mb-0">
       Bienvenido a Competencias FI
     </h1>
+    <!-- Botón de Logout en la esquina derecha -->
+    <button (click)="onLogout()" class="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 transition duration-300 ml-auto">
+      Cerrar sesión
+    </button>
     <button class="bg-gradient-to-r from-black via-black to-[#014694] text-white py-2 px-8 rounded-full hover:from-[#014694] hover:via-black hover:to-black transition duration-300 md:ml-auto">
       <a [routerLink]="['/evaluations']">Ver evaluaciones</a>
     </button>

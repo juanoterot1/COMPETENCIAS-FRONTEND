@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { HomeService } from '../../../../core/services/api/home.service'; // Asegúrate que la ruta es correcta
+import { RouterLink, Router } from '@angular/router';
+import { HomeService } from '../../../../core/services/api/home.service'; // Asegúrate de que la ruta sea correcta
+import { AuthService } from '../../../../core/services/api/auth.service'; // Importa el servicio de autenticación
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink], // Eliminado NgChartsModule
+  imports: [RouterLink],
   templateUrl: './home.component.html',
   styles: ``
 })
@@ -14,7 +15,11 @@ export class HomeComponent implements OnInit {
   sinRespuestaCount!: number;
   conRespuestaCount!: number;
 
-  constructor(private homeService: HomeService) {}
+  constructor(
+    private homeService: HomeService,
+    private authService: AuthService, // Servicio de autenticación para gestionar el logout
+    private router: Router // Router para la redirección
+  ) {}
 
   ngOnInit(): void {
     this.loadTotalEvaluations();
@@ -42,5 +47,10 @@ export class HomeComponent implements OnInit {
         console.error('Error al cargar los conteos por estado:', error);
       }
     );
+  }
+
+  onLogout(): void {
+    this.authService.logout(); // Elimina el token de autenticación
+    this.router.navigate(['/login']); // Redirige al usuario a la página de inicio de sesión
   }
 }
