@@ -33,29 +33,16 @@
         </div>
       </div>
 
-      <!-- Indicador de Evaluaciones Sin Respuesta -->
+      <!-- Indicador de Asignaturas Totales -->
       <div class="flex items-center bg-white shadow-lg rounded-xl p-6 transition-transform transform hover:scale-105">
         <div class="flex-shrink-0">
-          <svg class="h-16 w-16 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m2 6H6a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2z" />
+          <svg class="h-16 w-16 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
           </svg>
         </div>
         <div class="ml-6">
-          <p class="text-md font-medium text-gray-500">Evaluaciones Sin Respuesta</p>
-          <p class="text-3xl font-semibold text-red-600">{{ sinRespuestaCount }}</p>
-        </div>
-      </div>
-
-      <!-- Indicador de Evaluaciones Con Respuesta -->
-      <div class="flex items-center bg-white shadow-lg rounded-xl p-6 transition-transform transform hover:scale-105">
-        <div class="flex-shrink-0">
-          <svg class="h-16 w-16 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7 20h10a2 2 0 002-2V6a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        </div>
-        <div class="ml-6">
-          <p class="text-md font-medium text-gray-500">Evaluaciones Con Respuesta</p>
-          <p class="text-3xl font-semibold text-green-600">{{ conRespuestaCount }}</p>
+          <p class="text-md font-medium text-gray-500">Asignaturas Totales</p>
+          <p class="text-3xl font-semibold text-purple-600">{{ totalSubjects }}</p>
         </div>
       </div>
     </div>
