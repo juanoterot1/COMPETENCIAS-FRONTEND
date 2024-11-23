@@ -22,6 +22,7 @@ export class LoginComponent {
     private cookieService: CookieService
   ) {}
 
+
   onLogin() {
     if (!this.username || !this.password) {
       this.errorMessage = 'Por favor, ingrese su nombre de usuario y contraseña.';
