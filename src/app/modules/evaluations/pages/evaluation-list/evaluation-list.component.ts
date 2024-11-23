@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EvaluationService } from '../../../../core/services/api/evaluation.service';
 import { Evaluation } from '../../../../core/models/evaluation.model';
+import { FeedbackService } from '../../../../core/services/api/feedback.service'
+import { Feedback } from '../../../../core/models/feedback.model';
+
 
 @Component({
   selector: 'app-evaluation-list',
@@ -17,7 +20,12 @@ export class EvaluationListComponent implements OnInit {
   descriptionFilter: string = '';
   showFilters: boolean = false;
 
-  constructor(private evaluationService: EvaluationService, private router: Router) {}
+  constructor(
+    private evaluationService: EvaluationService,
+    private feedbackService: FeedbackService, // <-- Añadido aquí
+    private router: Router
+  ) {}
+  
 
   ngOnInit(): void {
     this.fetchEvaluations();
@@ -89,4 +97,30 @@ export class EvaluationListComponent implements OnInit {
       this.fetchEvaluations();
     });
   }
+
+  openFeedbackModal(evaluationId: number): void {
+    const feedbackText = prompt('Ingrese la retroalimentación para esta evaluación:');
+  
+    if (feedbackText) {
+      const feedback: Partial<Feedback> = {
+        id_evaluation: evaluationId,
+        id_user: 1, // Cambiar según el usuario autenticado
+        feedback_text: feedbackText
+      };
+  
+      this.feedbackService.createFeedback(feedback, 'current_user') // Cambiar performedBy por el usuario real
+        .subscribe({
+          next: (response) => {
+            alert('Retroalimentación guardada correctamente');
+          },
+          error: (error) => {
+            console.error('Error al guardar retroalimentación:', error);
+            alert('Ocurrió un error al guardar la retroalimentación');
+          }
+        });
+    }
+  }
+  
+
+
 }

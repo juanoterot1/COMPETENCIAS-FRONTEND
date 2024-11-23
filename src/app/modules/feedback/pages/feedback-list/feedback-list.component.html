@@ -1,0 +1,95 @@
+<div class="container mx-auto mt-10 px-6 max-w-3xl">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Listado de Retroalimentaciones</h2>
+  
+    <!-- Mensajes de Error y Éxito -->
+    <div *ngIf="errorMessage" class="bg-red-100 border border-red-500 text-red-800 px-4 py-3 rounded mb-6 text-center">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="bg-green-100 border border-green-500 text-green-800 px-4 py-3 rounded mb-6 text-center">
+      {{ successMessage }}
+    </div>
+  
+    <!-- Formulario para Crear Retroalimentación -->
+    <form (ngSubmit)="createFeedback()" class="bg-white shadow-lg rounded-lg px-8 py-10 mb-6">
+      <h3 class="text-lg font-semibold text-gray-700 mb-4">Crear Nueva Retroalimentación</h3>
+  
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-semibold mb-2" for="evaluation">Evaluación</label>
+        <select
+          [(ngModel)]="newFeedback.id_evaluation"
+          name="evaluation"
+          class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          required
+        >
+          <option [ngValue]="null" disabled selected>Seleccione una Evaluación</option>
+          <option *ngFor="let evaluation of evaluations" [ngValue]="evaluation.id">{{ evaluation.name }}</option>
+        </select>
+      </div>
+  
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-semibold mb-2" for="feedback_text">Texto de Retroalimentación</label>
+        <textarea
+          [(ngModel)]="newFeedback.feedback_text"
+          name="feedback_text"
+          rows="5"
+          placeholder="Escriba su retroalimentación aquí..."
+          class="shadow-md appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          required
+        ></textarea>
+      </div>
+  
+      <div class="flex items-center justify-between">
+        <button
+          type="submit"
+          [disabled]="isSubmitting"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out"
+        >
+          Crear Retroalimentación
+        </button>
+      </div>
+    </form>
+  
+    <!-- Tabla de Feedbacks -->
+    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="p-3 text-left text-sm font-semibold text-gray-700">ID</th>
+          <th class="p-3 text-left text-sm font-semibold text-gray-700">Evaluación</th>
+          <th class="p-3 text-left text-sm font-semibold text-gray-700">Texto</th>
+          <th class="p-3 text-center text-sm font-semibold text-gray-700">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let feedback of feedbacks">
+          <td class="p-3 text-sm text-gray-600">{{ feedback.id }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ feedback.id_evaluation }}</td>
+          <td class="p-3 text-sm text-gray-600">{{ feedback.feedback_text }}</td>
+          <td class="p-3 text-center space-x-2">
+            <button (click)="deleteFeedback(feedback.id)" class="bg-red-400 hover:bg-red-500 text-white text-sm font-medium py-1 px-3 rounded">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Paginación -->
+    <div class="flex justify-between items-center mt-6">
+      <button
+        (click)="prevPage()"
+        [disabled]="currentPage === 1"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-600 text-sm font-medium py-1 px-3 rounded"
+      >
+        Página anterior
+      </button>
+      <span class="text-sm text-gray-600">Página {{ currentPage }}</span>
+      <button
+        (click)="nextPage()"
+        [disabled]="feedbacks.length < itemsPerPage"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-600 text-sm font-medium py-1 px-3 rounded"
+      >
+        Siguiente página
+      </button>
+    </div>
+  </div>
+  
