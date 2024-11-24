@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "eva-supplying-admin-frontend": {
+    "competencias-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/eva-supplying-admin-frontend",
+            "outputPath": "dist/competencias-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "eva-supplying-admin-frontend:build:production"
+              "buildTarget": "competencias-frontend:build:production"
             },
             "development": {
-              "buildTarget": "eva-supplying-admin-frontend:build:development"
+              "buildTarget": "competencias-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
