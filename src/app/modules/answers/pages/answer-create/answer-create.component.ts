@@ -29,6 +29,9 @@ export class AnswerCreateComponent {
     private router: Router
   ) {}
 
+  /**
+   * Agregar una nueva respuesta al formulario.
+   */
   addAnswer(): void {
     this.answers.push({
       answer_description: '',
@@ -38,6 +41,10 @@ export class AnswerCreateComponent {
     });
   }
 
+  /**
+   * Eliminar una respuesta específica del formulario.
+   * @param index Índice de la respuesta a eliminar.
+   */
   removeAnswer(index: number): void {
     this.answers.splice(index, 1);
   }
@@ -46,6 +53,7 @@ export class AnswerCreateComponent {
    * Enviar todas las respuestas al backend en una sola petición.
    */
   createAnswers(): void {
+    // Validar que todos los campos sean válidos.
     if (
       this.answers.some(
         (answer) =>
@@ -60,6 +68,7 @@ export class AnswerCreateComponent {
 
     const idUser = 1;
 
+    // Agregar el ID de usuario a todas las respuestas.
     const answersWithUser = this.answers.map((answer) => ({
       ...answer,
       id_user: idUser,
@@ -71,10 +80,13 @@ export class AnswerCreateComponent {
 
     this.isSubmitting = true;
 
+    // Enviar respuestas al backend.
     this.answerService.createAnswers(answersWithUser).subscribe({
       next: (response: ApiResponse<Answer[]>) => {
         this.successMessage = 'Respuestas creadas exitosamente.';
         this.isSubmitting = false;
+
+        // Redirigir después de un breve tiempo.
         setTimeout(() => this.router.navigate(['/answers']), 2000);
       },
       error: (error: HttpErrorResponse) => {
@@ -85,6 +97,9 @@ export class AnswerCreateComponent {
     });
   }
 
+  /**
+   * Cancelar la creación y redirigir a otra página.
+   */
   cancelCreate(): void {
     this.router.navigate(['/answers']);
   }
