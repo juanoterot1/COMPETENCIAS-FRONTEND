@@ -40,4 +40,5 @@ jobs:
 
     - name: Deploy
       if: success()
-      run: aws s3 sync ./dist/competencias-frontend/browser s3://S3AdminCompetenciasFrontend --delete
+      run: aws s3 sync ./dist/competencias-frontend/browser s3://competencias-frontend --delete
+
