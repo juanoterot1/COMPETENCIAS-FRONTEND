@@ -14,17 +14,23 @@ export class AnswerService {
 
   constructor(private http: HttpClient) {}
 
-  // Método para crear respuestas en batch
+  /**
+   * Método para enviar múltiples respuestas (batch) al servidor.
+   * @param answers Array de respuestas que se enviará al backend.
+   * @returns Observable con la respuesta de la API.
+   */
   createAnswers(answers: Partial<Answer>[]): Observable<ApiResponse<Answer[]>> {
     return this.http.post<ApiResponse<Answer[]>>(this.apiUrl, answers);
   }
 
-  // Obtener una respuesta por su ID
-  getAnswerById(id: number): Observable<ApiResponse<Answer>> {
-    return this.http.get<ApiResponse<Answer>>(`${this.apiUrl}/${id}`);
-  }
-
-  // Obtener respuestas con paginación y filtros opcionales
+  /**
+   * Obtener respuestas con filtros opcionales y paginación.
+   * @param page Número de página actual.
+   * @param perPage Cantidad de respuestas por página.
+   * @param idEvaluation (Opcional) Filtro por ID de evaluación.
+   * @param idQuestion (Opcional) Filtro por ID de pregunta.
+   * @returns Observable con el listado de respuestas paginadas.
+   */
   getAnswers(
     page: number = 1,
     perPage: number = 10,
@@ -45,19 +51,30 @@ export class AnswerService {
     return this.http.get<ApiResponse<Answer[]>>(`${this.apiUrl}`, { params });
   }
 
-  // Actualizar una respuesta
-  updateAnswer(
-    id: number,
-    answer: Partial<Answer>,
-    idUser: number
-  ): Observable<ApiResponse<Answer>> {
-    return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, {
-      ...answer,
-      id_user: idUser,
-    });
+  /**
+   * Obtener una respuesta específica por su ID.
+   * @param id ID de la respuesta a buscar.
+   * @returns Observable con la respuesta correspondiente.
+   */
+  getAnswerById(id: number): Observable<ApiResponse<Answer>> {
+    return this.http.get<ApiResponse<Answer>>(`${this.apiUrl}/${id}`);
   }
 
-  // Eliminar una respuesta
+  /**
+   * Actualizar una respuesta específica.
+   * @param id ID de la respuesta a actualizar.
+   * @param answer Datos a actualizar de la respuesta.
+   * @returns Observable con la respuesta actualizada.
+   */
+  updateAnswer(id: number, answer: Partial<Answer>): Observable<ApiResponse<Answer>> {
+    return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, answer);
+  }
+
+  /**
+   * Eliminar una respuesta específica por su ID.
+   * @param id ID de la respuesta a eliminar.
+   * @returns Observable que indica el resultado de la operación.
+   */
   deleteAnswer(id: number): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
   }
