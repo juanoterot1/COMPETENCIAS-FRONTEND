@@ -47,6 +47,11 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/answers/answer.module').then(m => m.AnswerModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'feedback',
+    loadChildren: () => import('./modules/feedback/feedback.module').then(m => m.FeedbackModule),
+    canActivate: [AuthGuard]
+  },
   // Ruta comodín: redirige a la página home si no se encuentra la ruta solicitada
   { path: '**', redirectTo: 'home' }
 ];
