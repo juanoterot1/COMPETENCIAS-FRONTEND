@@ -14,8 +14,12 @@ export class AnswerService {
 
   constructor(private http: HttpClient) {}
 
-  createAnswer(answer: Partial<Answer>): Observable<ApiResponse<Answer>> {
-    return this.http.post<ApiResponse<Answer>>(this.apiUrl, answer);
+  createAnswer(answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
+    const payload = {
+      ...answer,
+      id_user: idUser,
+    };
+    return this.http.post<ApiResponse<Answer>>(this.apiUrl, payload);
   }
 
   createAnswers(answers: Partial<Answer>[]): Observable<ApiResponse<Answer[]>> {
@@ -46,7 +50,7 @@ export class AnswerService {
     return this.http.get<ApiResponse<Answer>>(`${this.apiUrl}/${id}`);
   }
 
-  updateAnswer(id: number, answer: Partial<Answer>, idUser?: number): Observable<ApiResponse<Answer>> {
+  updateAnswer(id: number, answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
     const payload = {
       ...answer,
       id_user: idUser,
