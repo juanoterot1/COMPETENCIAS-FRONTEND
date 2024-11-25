@@ -14,18 +14,18 @@ export class AnswerService {
 
   constructor(private http: HttpClient) {}
 
-  createAnswer(answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
-    const payload = {
-      ...answer,
-      id_user: idUser,
-    };
-    return this.http.post<ApiResponse<Answer>>(this.apiUrl, payload);
-  }
-
+  /**
+   * Método para enviar múltiples respuestas en una sola petición.
+   * @param answers Array de respuestas a enviar al backend.
+   * @returns Observable con la respuesta de la API.
+   */
   createAnswers(answers: Partial<Answer>[]): Observable<ApiResponse<Answer[]>> {
     return this.http.post<ApiResponse<Answer[]>>(this.apiUrl, answers);
   }
 
+  /**
+   * Otros métodos del servicio
+   */
   getAnswers(
     page: number = 1,
     perPage: number = 10,
@@ -50,12 +50,8 @@ export class AnswerService {
     return this.http.get<ApiResponse<Answer>>(`${this.apiUrl}/${id}`);
   }
 
-  updateAnswer(id: number, answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
-    const payload = {
-      ...answer,
-      id_user: idUser,
-    };
-    return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, payload);
+  updateAnswer(id: number, answer: Partial<Answer>): Observable<ApiResponse<Answer>> {
+    return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, answer);
   }
 
   deleteAnswer(id: number): Observable<ApiResponse<void>> {

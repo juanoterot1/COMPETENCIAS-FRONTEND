@@ -42,6 +42,9 @@ export class AnswerCreateComponent {
     this.answers.splice(index, 1);
   }
 
+  /**
+   * Enviar todas las respuestas al backend en una sola petición.
+   */
   createAnswers(): void {
     if (
       this.answers.some(
