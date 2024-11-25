@@ -41,31 +41,49 @@ export class AnswerCreateComponent {
     this.answers.splice(index, 1);
   }
 
-  createAnswers(): void {
+  createAnswer(answer: Partial<Answer>): void {
     this.isSubmitting = true;
 
-    // Asignar el ID de usuario (ajusta este valor según corresponda en tu aplicación)
+    // ID de usuario (ajusta este valor según corresponda en tu aplicación)
     const idUser = 1;
 
-    // Incluir 'id_user' en cada respuesta antes de enviar
+    this.answerService.createAnswer(answer, idUser).subscribe({
+      next: (response: ApiResponse<Answer>) => {
+        this.successMessage = 'Respuesta creada exitosamente.';
+        this.isSubmitting = false;
+        setTimeout(() => this.router.navigate(['/answers']), 2000);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error creating answer:', error);
+        this.errorMessage = 'Ocurrió un error al crear la respuesta.';
+        this.isSubmitting = false;
+      },
+    });
+  }
+
+  createAllAnswers(): void {
+    this.isSubmitting = true;
+
+    // ID de usuario (ajusta este valor según corresponda en tu aplicación)
+    const idUser = 1;
+
     const answersWithUser = this.answers.map(answer => ({
       ...answer,
-      id_user: idUser
+      id_user: idUser,
     }));
 
-    this.answerService.createAnswers(answersWithUser)
-      .subscribe({
-        next: (response: ApiResponse<Answer[]>) => {
-          this.successMessage = 'Respuestas creadas exitosamente.';
-          this.isSubmitting = false;
-          setTimeout(() => this.router.navigate(['/answers']), 2000); // Redirige después de 2 segundos
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error creating answers:', error);
-          this.errorMessage = 'Ocurrió un error al crear las respuestas.';
-          this.isSubmitting = false;
-        },
-      });
+    this.answerService.createAnswers(answersWithUser).subscribe({
+      next: (response: ApiResponse<Answer[]>) => {
+        this.successMessage = 'Todas las respuestas se han creado exitosamente.';
+        this.isSubmitting = false;
+        setTimeout(() => this.router.navigate(['/answers']), 2000);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error creating answers:', error);
+        this.errorMessage = 'Ocurrió un error al crear las respuestas.';
+        this.isSubmitting = false;
+      },
+    });
   }
 
   cancelCreate(): void {

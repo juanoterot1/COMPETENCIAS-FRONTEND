@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../models/api-response.model';
 import { Answer } from '../../models/answer.model';
-import { environment } from '../../../../environment/environment'; // Asegúrate de que la ruta sea correcta
+import { environment } from '../../../../environment/environment'; // Ajusta la ruta si es necesario
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +14,12 @@ export class AnswerService {
 
   constructor(private http: HttpClient) {}
 
-  // Método para crear una respuesta individual
-  createAnswer(answer: Partial<Answer>): Observable<ApiResponse<Answer>> {
-    return this.http.post<ApiResponse<Answer>>(this.apiUrl, [answer]);
+  // Método para crear una respuesta individual con idUser
+  createAnswer(answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
+    return this.http.post<ApiResponse<Answer>>(this.apiUrl, {
+      ...answer,
+      id_user: idUser,
+    });
   }
 
   // Método para crear respuestas en batch
@@ -48,8 +51,11 @@ export class AnswerService {
     return this.http.get<ApiResponse<Answer[]>>(`${this.apiUrl}`, { params });
   }
 
-  updateAnswer(id: number, answer: Partial<Answer>): Observable<ApiResponse<Answer>> {
-    return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, answer);
+  updateAnswer(id: number, answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
+    return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, {
+      ...answer,
+      id_user: idUser,
+    });
   }
 
   deleteAnswer(id: number): Observable<ApiResponse<void>> {
