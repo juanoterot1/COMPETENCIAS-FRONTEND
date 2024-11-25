@@ -1,4 +1,3 @@
-// src/app/modules/answers/pages/answer-create/answer-create.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnswerService } from '../../../../core/services/api/answer.service';
@@ -50,37 +49,38 @@ export class AnswerCreateComponent {
   }
 
   /**
+   * Validar las respuestas antes de enviarlas.
+   */
+  private validateAnswers(): boolean {
+    return !this.answers.some(
+      (answer) =>
+        !answer.answer_description ||
+        (answer.id_evaluation ?? 0) <= 0 ||
+        (answer.id_question ?? 0) <= 0
+    );
+  }
+
+  /**
    * Enviar todas las respuestas al backend en una sola petición.
    */
   createAnswers(): void {
-    // Validar que todos los campos sean válidos.
-    if (
-      this.answers.some(
-        (answer) =>
-          !answer.answer_description ||
-          (answer.id_evaluation ?? 0) <= 0 ||
-          (answer.id_question ?? 0) <= 0
-      )
-    ) {
+    if (!this.validateAnswers()) {
       this.errorMessage = 'Todos los campos son obligatorios.';
       return;
     }
 
-    const idUser = 1;
+    const idUser = 1; // ID de usuario (puedes modificarlo según tu lógica).
 
-    // Agregar el ID de usuario a todas las respuestas.
+    // Preparar las respuestas para enviarlas al backend.
     const answersWithUser = this.answers.map((answer) => ({
       ...answer,
       id_user: idUser,
-      answer_description: answer.answer_description!,
-      id_evaluation: answer.id_evaluation!,
-      id_question: answer.id_question!,
       score: answer.score ?? 0,
     }));
 
     this.isSubmitting = true;
 
-    // Enviar todas las respuestas en una única solicitud
+    // Llamar al servicio para enviar las respuestas.
     this.answerService.createAnswers(answersWithUser).subscribe({
       next: (response: ApiResponse<Answer[]>) => {
         this.successMessage = 'Respuestas creadas exitosamente.';
