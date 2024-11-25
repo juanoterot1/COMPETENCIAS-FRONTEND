@@ -69,14 +69,15 @@ export class AnswerCreateComponent {
       return;
     }
   
-    const idUser = 1; // Asigna el ID de usuario dinámicamente si aplica.
+    // Asignar un valor por defecto de id_user si no está definido.
+    const defaultUserId = 1;
   
     // Preparar las respuestas para enviarlas al backend.
     const answersWithUser = this.answers.map((answer) => ({
       answer_description: answer.answer_description!,
       id_evaluation: answer.id_evaluation!,
       id_question: answer.id_question!,
-      id_user: idUser, // Agrega el ID de usuario aquí.
+      id_user: answer.id_user ?? defaultUserId, // Usar el valor por defecto si no se proporciona.
       score: answer.score ?? 0,
     }));
   
@@ -98,6 +99,7 @@ export class AnswerCreateComponent {
       },
     });
   }
+  
   
 
   /**
