@@ -80,7 +80,7 @@ export class AnswerCreateComponent {
 
     this.isSubmitting = true;
 
-    // Enviar respuestas al backend.
+    // Enviar todas las respuestas en una única solicitud
     this.answerService.createAnswers(answersWithUser).subscribe({
       next: (response: ApiResponse<Answer[]>) => {
         this.successMessage = 'Respuestas creadas exitosamente.';
