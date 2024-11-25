@@ -41,32 +41,13 @@ export class AnswerCreateComponent {
     this.answers.splice(index, 1);
   }
 
-  createAnswer(answer: Partial<Answer>): void {
-    this.isSubmitting = true;
-
-    // ID de usuario (ajusta este valor según corresponda en tu aplicación)
-    const idUser = 1;
-
-    this.answerService.createAnswer(answer, idUser).subscribe({
-      next: (response: ApiResponse<Answer>) => {
-        this.successMessage = 'Respuesta creada exitosamente.';
-        this.isSubmitting = false;
-        setTimeout(() => this.router.navigate(['/answers']), 2000);
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error('Error creating answer:', error);
-        this.errorMessage = 'Ocurrió un error al crear la respuesta.';
-        this.isSubmitting = false;
-      },
-    });
-  }
-
   createAllAnswers(): void {
     this.isSubmitting = true;
 
-    // ID de usuario (ajusta este valor según corresponda en tu aplicación)
+    // ID de usuario
     const idUser = 1;
 
+    // Agregar id_user a cada respuesta
     const answersWithUser = this.answers.map(answer => ({
       ...answer,
       id_user: idUser,
@@ -79,7 +60,7 @@ export class AnswerCreateComponent {
         setTimeout(() => this.router.navigate(['/answers']), 2000);
       },
       error: (error: HttpErrorResponse) => {
-        console.error('Error creating answers:', error);
+        console.error('Error creando respuestas:', error);
         this.errorMessage = 'Ocurrió un error al crear las respuestas.';
         this.isSubmitting = false;
       },
