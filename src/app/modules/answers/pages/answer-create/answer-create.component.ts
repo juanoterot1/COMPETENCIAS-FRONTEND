@@ -68,24 +68,26 @@ export class AnswerCreateComponent {
       this.errorMessage = 'Todos los campos son obligatorios.';
       return;
     }
-
-    const idUser = 1; // ID de usuario (puedes modificarlo según tu lógica).
-
+  
+    const idUser = 1; // Asigna el ID de usuario dinámicamente si aplica.
+  
     // Preparar las respuestas para enviarlas al backend.
     const answersWithUser = this.answers.map((answer) => ({
-      ...answer,
-      id_user: idUser,
+      answer_description: answer.answer_description!,
+      id_evaluation: answer.id_evaluation!,
+      id_question: answer.id_question!,
+      id_user: idUser, // Agrega el ID de usuario aquí.
       score: answer.score ?? 0,
     }));
-
+  
     this.isSubmitting = true;
-
+  
     // Llamar al servicio para enviar las respuestas.
     this.answerService.createAnswers(answersWithUser).subscribe({
       next: (response: ApiResponse<Answer[]>) => {
         this.successMessage = 'Respuestas creadas exitosamente.';
         this.isSubmitting = false;
-
+  
         // Redirigir después de un breve tiempo.
         setTimeout(() => this.router.navigate(['/answers']), 2000);
       },
@@ -96,6 +98,7 @@ export class AnswerCreateComponent {
       },
     });
   }
+  
 
   /**
    * Cancelar la creación y redirigir a otra página.
