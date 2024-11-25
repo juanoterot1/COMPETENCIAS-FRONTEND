@@ -68,28 +68,28 @@ export class AnswerCreateComponent {
       this.errorMessage = 'Todos los campos son obligatorios.';
       return;
     }
-  
-    // Asignar un valor por defecto de id_user si no está definido.
+
+    // Valor predeterminado para id_user
     const defaultUserId = 1;
-  
-    // Preparar las respuestas para enviarlas al backend.
+
+    // Preparar las respuestas para enviarlas al backend con id_user incluido
     const answersWithUser = this.answers.map((answer) => ({
       answer_description: answer.answer_description!,
       id_evaluation: answer.id_evaluation!,
       id_question: answer.id_question!,
-      id_user: answer.id_user ?? defaultUserId, // Usar el valor por defecto si no se proporciona.
+      id_user: defaultUserId, // Asignación directa del ID de usuario por defecto
       score: answer.score ?? 0,
     }));
-  
+
     this.isSubmitting = true;
-  
-    // Llamar al servicio para enviar las respuestas.
+
+    // Llamar al servicio para enviar las respuestas al backend
     this.answerService.createAnswers(answersWithUser).subscribe({
       next: (response: ApiResponse<Answer[]>) => {
         this.successMessage = 'Respuestas creadas exitosamente.';
         this.isSubmitting = false;
-  
-        // Redirigir después de un breve tiempo.
+
+        // Redirigir después de un breve tiempo
         setTimeout(() => this.router.navigate(['/answers']), 2000);
       },
       error: (error: HttpErrorResponse) => {
@@ -99,8 +99,6 @@ export class AnswerCreateComponent {
       },
     });
   }
-  
-  
 
   /**
    * Cancelar la creación y redirigir a otra página.
