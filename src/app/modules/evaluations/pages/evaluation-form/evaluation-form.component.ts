@@ -1,106 +1,103 @@
-// src/app/modules/answers/pages/answer-create/answer-create.component.ts
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+// src/app/modules/evaluations/pages/evaluation-form/evaluation-form.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EvaluationService } from '../../../../core/services/api/evaluation.service';
+import { QuestionService } from '../../../../core/services/api/question.service';
 import { AnswerService } from '../../../../core/services/api/answer.service';
+import { Evaluation } from '../../../../core/models/evaluation.model';
+import { Question } from '../../../../core/models/question.model';
 import { Answer } from '../../../../core/models/answer.model';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ApiResponse } from '../../../../core/models/api-response.model';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-answer-create',
-  templateUrl: './answer-create.component.html',
+  selector: 'app-evaluation-form',
+  templateUrl: './evaluation-form.component.html',
 })
-export class AnswerCreateComponent {
-  answers: Partial<Answer>[] = [
-    {
-      answer_description: '',
-      id_evaluation: 0,
-      id_question: 0,
-      score: 0,
-    },
-  ];
-
-  successMessage: string = '';
-  errorMessage: string = '';
-  isSubmitting: boolean = false;
+export class EvaluationFormComponent implements OnInit {
+  evaluationId!: number;
+  evaluation!: Evaluation;
+  questions: Question[] = [];
+  answers: { [key: number]: Answer[] } = {};
+  selectedAnswers: { [key: number]: string } = {};
 
   constructor(
+    private route: ActivatedRoute,
+    private evaluationService: EvaluationService,
+    private questionService: QuestionService,
     private answerService: AnswerService,
     private router: Router
   ) {}
 
-  /**
-   * Agregar una nueva respuesta al formulario.
-   */
-  addAnswer(): void {
-    this.answers.push({
-      answer_description: '',
-      id_evaluation: 0,
-      id_question: 0,
-      score: 0,
+  ngOnInit(): void {
+    this.evaluationId = +this.route.snapshot.paramMap.get('id')!;
+    this.loadEvaluation();
+    this.loadQuestions();
+  }
+
+  loadEvaluation(): void {
+    this.evaluationService.getEvaluationById(this.evaluationId).subscribe({
+      next: (response) => {
+        this.evaluation = response.result;
+      },
+      error: (error) => {
+        console.error('Error loading evaluation:', error);
+        Swal.fire('Error', 'No se pudo cargar la evaluación.', 'error');
+      },
     });
   }
 
-  /**
-   * Eliminar una respuesta específica del formulario.
-   * @param index Índice de la respuesta a eliminar.
-   */
-  removeAnswer(index: number): void {
-    this.answers.splice(index, 1);
+  loadQuestions(): void {
+    this.questionService.getQuestions(1, 100).subscribe({
+      next: (response) => {
+        this.questions = response.result.filter((q) => q.id_evaluation === this.evaluationId);
+        this.loadAnswers();
+      },
+      error: (error) => {
+        console.error('Error loading questions:', error);
+      },
+    });
   }
 
-  /**
-   * Enviar todas las respuestas al backend en una sola petición.
-   */
-  createAnswers(): void {
-    // Validar que todos los campos sean válidos.
-    if (
-      this.answers.some(
-        (answer) =>
-          !answer.answer_description ||
-          (answer.id_evaluation ?? 0) <= 0 ||
-          (answer.id_question ?? 0) <= 0
-      )
-    ) {
-      this.errorMessage = 'Todos los campos son obligatorios.';
-      return;
-    }
+  loadAnswers(): void {
+    this.questions.forEach((question) => {
+      this.answerService.getAnswers(1, 100, this.evaluationId, question.id).subscribe({
+        next: (response) => {
+          this.answers[question.id] = response.result;
+        },
+        error: (error) => {
+          console.error(`Error loading answers for question ${question.id}:`, error);
+        },
+      });
+    });
+  }
 
-    const idUser = 1;
-
-    // Agregar el ID de usuario a todas las respuestas.
-    const answersWithUser = this.answers.map((answer) => ({
-      ...answer,
-      id_user: idUser,
-      answer_description: answer.answer_description!,
-      id_evaluation: answer.id_evaluation!,
-      id_question: answer.id_question!,
-      score: answer.score ?? 0,
+  submitForm(): void {
+    const answersToSave = this.questions.map((question) => ({
+      answer_description: this.selectedAnswers[question.id],
+      id_evaluation: this.evaluationId,
+      id_question: question.id,
+      score: 0,
     }));
 
-    this.isSubmitting = true;
-
-    // Enviar todas las respuestas en una única solicitud
-    this.answerService.createAnswers(answersWithUser).subscribe({
-      next: (response: ApiResponse<Answer[]>) => {
-        this.successMessage = 'Respuestas creadas exitosamente.';
-        this.isSubmitting = false;
-
-        // Redirigir después de un breve tiempo.
-        setTimeout(() => this.router.navigate(['/answers']), 2000);
+    this.answerService.createAnswers(answersToSave).subscribe({
+      next: () => {
+        Swal.fire({
+          title: '¡Evaluación completada!',
+          html: 'Tu evaluación ha sido guardada correctamente.<br><strong>En breve podrás visualizar la retroalimentación de la inteligencia artificial.</strong>',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+        }).then(() => {
+          this.router.navigate(['/evaluations']);
+        });
       },
-      error: (error: HttpErrorResponse) => {
-        console.error('Error creando respuestas:', error);
-        this.errorMessage = 'Ocurrió un error al crear las respuestas.';
-        this.isSubmitting = false;
+      error: (error) => {
+        console.error('Error al guardar las respuestas:', error);
+        Swal.fire('Error', 'Hubo un error al guardar las respuestas.', 'error');
       },
     });
   }
 
-  /**
-   * Cancelar la creación y redirigir a otra página.
-   */
-  cancelCreate(): void {
-    this.router.navigate(['/answers']);
+  cancel(): void {
+    this.router.navigate(['/evaluations']);
   }
 }
