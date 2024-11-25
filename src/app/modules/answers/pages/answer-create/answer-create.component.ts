@@ -28,6 +28,7 @@ export class AnswerCreateComponent {
     private router: Router
   ) {}
 
+  // Añadir una respuesta al formulario
   addAnswer(): void {
     this.answers.push({
       answer_description: '',
@@ -37,22 +38,45 @@ export class AnswerCreateComponent {
     });
   }
 
+  // Eliminar una respuesta del formulario
   removeAnswer(index: number): void {
     this.answers.splice(index, 1);
   }
 
+  // Crear todas las respuestas en formato de lista
   createAllAnswers(): void {
     this.isSubmitting = true;
 
-    // ID de usuario
+    // ID del usuario
     const idUser = 1;
 
-    // Agregar id_user a cada respuesta
-    const answersWithUser = this.answers.map(answer => ({
-      ...answer,
+    // Validar que todas las respuestas estén completas
+    if (
+      this.answers.some(
+        (answer) =>
+          !answer.answer_description ||
+          answer.id_evaluation === undefined ||
+          answer.id_evaluation <= 0 ||
+          answer.id_question === undefined ||
+          answer.id_question <= 0
+      )
+    ) {
+      this.errorMessage = 'Todos los campos son obligatorios.';
+      this.isSubmitting = false;
+      return;
+    }
+    
+
+    // Mapear las respuestas para incluir el campo `id_user`
+    const answersWithUser = this.answers.map((answer) => ({
+      answer_description: answer.answer_description,
+      id_evaluation: answer.id_evaluation,
+      id_question: answer.id_question,
       id_user: idUser,
+      score: answer.score || 0, // Valor predeterminado para `score`
     }));
 
+    // Llamar al servicio para enviar las respuestas
     this.answerService.createAnswers(answersWithUser).subscribe({
       next: (response: ApiResponse<Answer[]>) => {
         this.successMessage = 'Todas las respuestas se han creado exitosamente.';
@@ -67,6 +91,7 @@ export class AnswerCreateComponent {
     });
   }
 
+  // Cancelar la creación y volver a la lista
   cancelCreate(): void {
     this.router.navigate(['/answers']);
   }

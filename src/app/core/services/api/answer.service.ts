@@ -4,33 +4,27 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../models/api-response.model';
 import { Answer } from '../../models/answer.model';
-import { environment } from '../../../../environment/environment'; // Ajusta la ruta si es necesario
+import { environment } from '../../../../environment/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AnswerService {
   private apiUrl = `${environment.apiUrl}/answers`;
 
   constructor(private http: HttpClient) {}
 
-  // Método para crear una respuesta individual con idUser
-  createAnswer(answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
-    return this.http.post<ApiResponse<Answer>>(this.apiUrl, {
-      ...answer,
-      id_user: idUser,
-    });
-  }
-
   // Método para crear respuestas en batch
   createAnswers(answers: Partial<Answer>[]): Observable<ApiResponse<Answer[]>> {
     return this.http.post<ApiResponse<Answer[]>>(this.apiUrl, answers);
   }
 
+  // Obtener una respuesta por su ID
   getAnswerById(id: number): Observable<ApiResponse<Answer>> {
     return this.http.get<ApiResponse<Answer>>(`${this.apiUrl}/${id}`);
   }
 
+  // Obtener respuestas con paginación y filtros opcionales
   getAnswers(
     page: number = 1,
     perPage: number = 10,
@@ -51,13 +45,19 @@ export class AnswerService {
     return this.http.get<ApiResponse<Answer[]>>(`${this.apiUrl}`, { params });
   }
 
-  updateAnswer(id: number, answer: Partial<Answer>, idUser: number): Observable<ApiResponse<Answer>> {
+  // Actualizar una respuesta
+  updateAnswer(
+    id: number,
+    answer: Partial<Answer>,
+    idUser: number
+  ): Observable<ApiResponse<Answer>> {
     return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, {
       ...answer,
       id_user: idUser,
     });
   }
 
+  // Eliminar una respuesta
   deleteAnswer(id: number): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
   }
