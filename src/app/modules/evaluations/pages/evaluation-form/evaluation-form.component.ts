@@ -17,6 +17,7 @@ export class EvaluationFormComponent implements OnInit {
   evaluationId!: number;
   evaluation!: Evaluation;
   questions: Question[] = [];
+  answers: { [key: number]: Answer[] } = {}; // Respuestas agrupadas por pregunta
   selectedAnswers: { [key: number]: string } = {}; // Respuestas seleccionadas por pregunta
 
   constructor(
@@ -49,10 +50,24 @@ export class EvaluationFormComponent implements OnInit {
     this.questionService.getQuestions(1, 100).subscribe({
       next: (response) => {
         this.questions = response.result.filter((q) => q.id_evaluation === this.evaluationId);
+        this.loadAnswers();
       },
       error: (error) => {
         console.error('Error loading questions:', error);
       },
+    });
+  }
+
+  loadAnswers(): void {
+    this.questions.forEach((question) => {
+      this.answerService.getAnswers(1, 100, this.evaluationId, question.id).subscribe({
+        next: (response) => {
+          this.answers[question.id] = response.result;
+        },
+        error: (error) => {
+          console.error(`Error loading answers for question ${question.id}:`, error);
+        },
+      });
     });
   }
 
@@ -64,7 +79,6 @@ export class EvaluationFormComponent implements OnInit {
       score: 0,
     }));
 
-    // Enviar todas las respuestas en una sola petición
     this.answerService.createAnswers(answersToSave).subscribe({
       next: () => {
         Swal.fire({
