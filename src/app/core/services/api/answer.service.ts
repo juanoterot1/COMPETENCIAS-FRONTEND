@@ -24,7 +24,12 @@ export class AnswerService {
   }
 
   /**
-   * Otros métodos del servicio
+   * Obtener respuestas con filtros opcionales y paginación.
+   * @param page Número de página actual.
+   * @param perPage Cantidad de respuestas por página.
+   * @param idEvaluation (Opcional) Filtro por ID de evaluación.
+   * @param idQuestion (Opcional) Filtro por ID de pregunta.
+   * @returns Observable con el listado de respuestas paginadas.
    */
   getAnswers(
     page: number = 1,
@@ -43,17 +48,33 @@ export class AnswerService {
       params = params.set('id_question', idQuestion.toString());
     }
 
-    return this.http.get<ApiResponse<Answer[]>>(this.apiUrl, { params });
+    return this.http.get<ApiResponse<Answer[]>>(`${this.apiUrl}`, { params });
   }
 
+  /**
+   * Obtener una respuesta específica por su ID.
+   * @param id ID de la respuesta a buscar.
+   * @returns Observable con la respuesta correspondiente.
+   */
   getAnswerById(id: number): Observable<ApiResponse<Answer>> {
     return this.http.get<ApiResponse<Answer>>(`${this.apiUrl}/${id}`);
   }
 
+  /**
+   * Actualizar una respuesta específica.
+   * @param id ID de la respuesta a actualizar.
+   * @param answer Datos a actualizar de la respuesta.
+   * @returns Observable con la respuesta actualizada.
+   */
   updateAnswer(id: number, answer: Partial<Answer>): Observable<ApiResponse<Answer>> {
     return this.http.put<ApiResponse<Answer>>(`${this.apiUrl}/${id}`, answer);
   }
 
+  /**
+   * Eliminar una respuesta específica por su ID.
+   * @param id ID de la respuesta a eliminar.
+   * @returns Observable que indica el resultado de la operación.
+   */
   deleteAnswer(id: number): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
   }
