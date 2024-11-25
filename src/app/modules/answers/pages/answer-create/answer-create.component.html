@@ -1,7 +1,8 @@
+<!-- src/app/modules/answers/pages/answer-create/answer-create.component.html -->
 <div class="container mx-auto mt-10 px-4">
   <h2 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Crear Respuestas</h2>
 
-  <form (ngSubmit)="createAllAnswers()" class="max-w-lg mx-auto bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+  <form (ngSubmit)="createAnswers()" class="max-w-lg mx-auto bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
     <!-- Mensaje de Error -->
     <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6 text-center">
       {{ errorMessage }}
@@ -41,7 +42,7 @@
       <div class="mb-4">
         <label class="block text-gray-700 font-semibold mb-2" for="score-{{i}}">Puntaje</label>
         <input [(ngModel)]="answer.score" name="score-{{i}}" type="number" placeholder="Puntaje"
-               class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none" required>
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none">
       </div>
 
       <!-- Botón para eliminar respuesta -->

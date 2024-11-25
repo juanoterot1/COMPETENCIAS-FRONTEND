@@ -11,9 +11,6 @@ import { ApiResponse } from '../../../../core/models/api-response.model';
   templateUrl: './answer-create.component.html',
 })
 export class AnswerCreateComponent {
-  /**
-   * Array de respuestas que se enviarán al backend.
-   */
   answers: Partial<Answer>[] = [
     {
       answer_description: '',
@@ -23,7 +20,6 @@ export class AnswerCreateComponent {
     },
   ];
 
-  // Mensajes de estado
   successMessage: string = '';
   errorMessage: string = '';
   isSubmitting: boolean = false;
@@ -33,9 +29,6 @@ export class AnswerCreateComponent {
     private router: Router
   ) {}
 
-  /**
-   * Agregar una nueva respuesta al listado.
-   */
   addAnswer(): void {
     this.answers.push({
       answer_description: '',
@@ -45,19 +38,11 @@ export class AnswerCreateComponent {
     });
   }
 
-  /**
-   * Eliminar una respuesta específica del listado.
-   * @param index Índice de la respuesta a eliminar.
-   */
   removeAnswer(index: number): void {
     this.answers.splice(index, 1);
   }
 
-  /**
-   * Crear múltiples respuestas en batch.
-   */
   createAnswers(): void {
-    // Validar que las respuestas tengan datos completos
     if (
       this.answers.some(
         (answer) =>
@@ -70,10 +55,8 @@ export class AnswerCreateComponent {
       return;
     }
 
-    // Asignar el ID de usuario (ajusta según tu aplicación)
     const idUser = 1;
 
-    // Mapear las respuestas para incluir 'id_user'
     const answersWithUser = this.answers.map((answer) => ({
       ...answer,
       id_user: idUser,
@@ -85,13 +68,10 @@ export class AnswerCreateComponent {
 
     this.isSubmitting = true;
 
-    // Llamar al servicio para enviar las respuestas
     this.answerService.createAnswers(answersWithUser).subscribe({
       next: (response: ApiResponse<Answer[]>) => {
         this.successMessage = 'Respuestas creadas exitosamente.';
         this.isSubmitting = false;
-
-        // Redirigir después de 2 segundos
         setTimeout(() => this.router.navigate(['/answers']), 2000);
       },
       error: (error: HttpErrorResponse) => {
@@ -102,9 +82,6 @@ export class AnswerCreateComponent {
     });
   }
 
-  /**
-   * Cancelar la creación y redirigir.
-   */
   cancelCreate(): void {
     this.router.navigate(['/answers']);
   }
