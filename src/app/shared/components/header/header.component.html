@@ -8,11 +8,16 @@
 
   <!-- Navigation or User Menu -->
   <nav class="flex-grow flex justify-end">
-    <ul class="flex space-x-4">
-      <li><a [routerLink]="['/']" class="hover:text-gray-600">Home</a></li>
-      <li><a href="https://eva.atlas.com.co/core" target="_blank" class="hover:text-gray-600">
-          <!-- EVA -->
-        </a></li>
+    <ul class="flex space-x-4 items-center">
+      <li><a [routerLink]="['/dashboard']" class="hover:text-gray-600">Home</a></li>
+      <li>
+        <button (click)="onLogout()" class="text-gray-700 hover:text-gray-600 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H4a3 3 0 01-3-3v-1m0-10V5a3 3 0 013-3h7a3 3 0 013 3v1" />
+          </svg>
+          Logout
+        </button>
+      </li>
     </ul>
   </nav>
 </header>
