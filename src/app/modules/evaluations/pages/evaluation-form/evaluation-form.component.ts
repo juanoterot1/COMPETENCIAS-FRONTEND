@@ -17,8 +17,8 @@ export class EvaluationFormComponent implements OnInit {
   evaluationId!: number;
   evaluation!: Evaluation;
   questions: Question[] = [];
-  answers: { [key: number]: Answer[] } = {}; // Respuestas agrupadas por pregunta
-  selectedAnswers: { [key: number]: string } = {}; // Respuestas seleccionadas por pregunta
+  answers: { [key: number]: Answer[] } = {};
+  selectedAnswers: { [key: number]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
