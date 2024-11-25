@@ -52,15 +52,6 @@ export class AnswerService {
   }
 
   /**
-   * Obtener una respuesta específica por su ID.
-   * @param id ID de la respuesta a buscar.
-   * @returns Observable con la respuesta correspondiente.
-   */
-  getAnswerById(id: number): Observable<ApiResponse<Answer>> {
-    return this.http.get<ApiResponse<Answer>>(`${this.apiUrl}/${id}`);
-  }
-
-  /**
    * Actualizar una respuesta específica.
    * @param id ID de la respuesta a actualizar.
    * @param answer Datos a actualizar de la respuesta.

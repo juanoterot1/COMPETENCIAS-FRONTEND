@@ -39,17 +39,8 @@ export class AnswerListComponent implements OnInit {
   fetchAnswers(): void {
     this.answerService.getAnswers(this.currentPage, this.itemsPerPage, this.idEvaluationFilter).subscribe({
       next: (response) => {
-        console.log('Response:', response);
         this.answers = response.result;
-
-        // Verificación explícita de la existencia de `totalItems`
-        if ('totalItems' in response && typeof response.totalItems === 'number') {
-          this.totalItems = response.totalItems;
-        } else if ('total' in response && typeof response.total === 'number') {
-          this.totalItems = response.total;
-        } else {
-          this.totalItems = response.result.length;
-        }
+        this.totalItems = response.total ?? this.answers.length;
       },
       error: (error) => {
         console.error('Error fetching answers:', error);

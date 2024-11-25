@@ -20,13 +20,14 @@ export class EvaluationUpdateComponent implements OnInit {
     description: '',
     id_subject: 0,
     id_faculty: 0,
-    status: 'active'
+    status: 'active',
   };
   faculties: Faculty[] = [];
   subjects: Subject[] = [];
   errorMessage: string = '';
   successMessage: string = '';
   isSubmitting: boolean = false;
+  idUser: number = 1; // ID del usuario (ajústalo según tu lógica de autenticación)
 
   constructor(
     private evaluationService: EvaluationService,
@@ -44,39 +45,39 @@ export class EvaluationUpdateComponent implements OnInit {
   }
 
   loadFaculties(): void {
-    this.facultyService.getFaculties().subscribe(
-      (response: ApiResponse<Faculty[]>) => {
+    this.facultyService.getFaculties().subscribe({
+      next: (response: ApiResponse<Faculty[]>) => {
         this.faculties = response.result;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error loading faculties:', error);
         this.errorMessage = 'No se pudieron cargar las facultades.';
-      }
-    );
+      },
+    });
   }
 
   loadSubjects(): void {
-    this.subjectService.getSubjects().subscribe(
-      (response: ApiResponse<Subject[]>) => {
+    this.subjectService.getSubjects().subscribe({
+      next: (response: ApiResponse<Subject[]>) => {
         this.subjects = response.result;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error loading subjects:', error);
         this.errorMessage = 'No se pudieron cargar las asignaturas.';
-      }
-    );
+      },
+    });
   }
 
   fetchEvaluationById(): void {
-    this.evaluationService.getEvaluationById(this.evaluationId).subscribe(
-      (response: ApiResponse<Evaluation>) => {
+    this.evaluationService.getEvaluationById(this.evaluationId).subscribe({
+      next: (response: ApiResponse<Evaluation>) => {
         this.evaluation = response.result;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching evaluation details:', error);
         this.errorMessage = 'No se pudo cargar la información de la evaluación.';
-      }
-    );
+      },
+    });
   }
 
   updateEvaluation(): void {
@@ -86,20 +87,20 @@ export class EvaluationUpdateComponent implements OnInit {
     }
 
     this.isSubmitting = true;
-    this.evaluationService.updateEvaluation(this.evaluationId, this.evaluation, 1) // Reemplaza 1 con el ID real del usuario si es necesario
-      .subscribe({
-        next: () => {
-          this.successMessage = 'Evaluación actualizada exitosamente';
-          setTimeout(() => {
-            this.router.navigate(['/evaluations']);
-          }, 2000);
-        },
-        error: (error) => {
-          console.error('Error updating evaluation:', error);
-          this.errorMessage = 'Ocurrió un error al actualizar la evaluación.';
-          this.isSubmitting = false;
-        }
-      });
+
+    this.evaluationService.updateEvaluation(this.evaluationId, this.evaluation, this.idUser).subscribe({
+      next: () => {
+        this.successMessage = 'Evaluación actualizada exitosamente';
+        setTimeout(() => {
+          this.router.navigate(['/evaluations']);
+        }, 2000);
+      },
+      error: (error) => {
+        console.error('Error updating evaluation:', error);
+        this.errorMessage = 'Ocurrió un error al actualizar la evaluación.';
+        this.isSubmitting = false;
+      },
+    });
   }
 
   cancelUpdate(): void {
