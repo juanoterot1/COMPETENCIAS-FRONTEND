@@ -16,6 +16,7 @@ export class AnswerCreateComponent {
       id_evaluation: 0,
       id_question: 0,
       score: 0,
+      id_user: 1, // ID de usuario quemado al inicializar
     },
   ];
 
@@ -37,6 +38,7 @@ export class AnswerCreateComponent {
       id_evaluation: 0,
       id_question: 0,
       score: 0,
+      id_user: 1, // ID de usuario quemado directamente
     });
   }
 
@@ -69,22 +71,11 @@ export class AnswerCreateComponent {
       return;
     }
 
-    // Valor predeterminado para id_user
-    const defaultUserId = 1;
-
-    // Preparar las respuestas para enviarlas al backend con id_user incluido
-    const answersWithUser = this.answers.map((answer) => ({
-      answer_description: answer.answer_description!,
-      id_evaluation: answer.id_evaluation!,
-      id_question: answer.id_question!,
-      id_user: defaultUserId, // Asignación directa del ID de usuario por defecto
-      score: answer.score ?? 0,
-    }));
-
+    // Las respuestas ya incluyen id_user directamente desde addAnswer()
     this.isSubmitting = true;
 
     // Llamar al servicio para enviar las respuestas al backend
-    this.answerService.createAnswers(answersWithUser).subscribe({
+    this.answerService.createAnswers(this.answers as Answer[]).subscribe({
       next: (response: ApiResponse<Answer[]>) => {
         this.successMessage = 'Respuestas creadas exitosamente.';
         this.isSubmitting = false;
