@@ -16,8 +16,8 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
   roles = [
     { id: 1, name: 'Admin' },
-    { id: 2, name: 'User' },
-    { id: 3, name: 'Manager' },
+    { id: 2, name: 'Profesor' },
+    { id: 3, name: 'Estudiante' },
   ];
   currentPage: number = 1;
   itemsPerPage: number = 10;
